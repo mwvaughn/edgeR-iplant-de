@@ -1,0 +1,70 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><title>R: Split the Counts or Pseudocounts from a DGEList Object...</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body>
+
+<table width="100%" summary="page for splitIntoGroups {edgeR}"><tr><td>splitIntoGroups {edgeR}</td><td align="right">R Documentation</td></tr></table>
+
+<h2>Split the Counts or Pseudocounts from a DGEList Object According To Group</h2>
+
+<h3>Description</h3>
+
+<p>Split the counts from a DGEList object according to group, creating a list where each element consists of a numeric matrix of counts for a particular experimental group. Given a pair of groups, split pseudocounts for these groups, creating a list where each element is a matrix of pseudocounts for a particular gourp.</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+splitIntoGroups(object)
+splitIntoGroupsPseudo(pseudo, group, pair)
+</pre>
+
+
+<h3>Arguments</h3>
+
+ 
+<table summary="R argblock">
+<tr valign="top"><td><code>object</code></td>
+<td>
+<p><code>DGEList</code>, object containing (at least) the elements <code>counts</code> (table of raw counts), <code>group</code> (factor indicating group) and <code>lib.size</code> (numeric vector of library sizes)</p>
+</td></tr>
+<tr valign="top"><td><code>pseudo</code></td>
+<td>
+<p>numeric matrix of quantile-adjusted pseudocounts to be split</p>
+</td></tr>
+<tr valign="top"><td><code>group</code></td>
+<td>
+<p>factor indicating group to which libraries/samples (i.e. columns of <code>pseudo</code> belong; must be same length as ncol(pseudo)</p>
+</td></tr>
+<tr valign="top"><td><code>pair</code></td>
+<td>
+<p>vector of length two stating pair of groups to be split for the pseudocounts</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p><code>splitIntoGroups</code> outputs a list in which each element is a matrix of count counts for an individual group. <code>splitIntoGroupsPseudo</code> outputs a list with two elements, in which each element is a numeric matrix of (pseudo-)count data for one of the groups specified.</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Davis McCarthy</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+# generate raw counts from NB, create list object
+y&lt;-matrix(rnbinom(80,size=1,mu=10),nrow=20)
+d&lt;-DGEList(counts=y,group=rep(1:2,each=2),lib.size=rep(c(1000:1001),2))
+rownames(d$counts)&lt;-paste("tagno",1:nrow(d$counts),sep=".")
+z1&lt;-splitIntoGroups(d)
+
+z2&lt;-splitIntoGroupsPseudo(d$counts,d$group,pair=c(1,2))
+</pre>
+
+<hr><div align="center">[Package <em>edgeR</em> version 2.4.3 <a href="00Index.html">Index</a>]</div>
+</body></html>

@@ -1,0 +1,75 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><title>R: Calculate Counts per Million from DGEList or Matrix Object</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body>
+
+<table width="100%" summary="page for cpm {edgeR}"><tr><td>cpm {edgeR}</td><td align="right">R Documentation</td></tr></table>
+
+<h2>Calculate Counts per Million from DGEList or Matrix Object</h2>
+
+<h3>Description</h3>
+
+<p>Returns counts per million from a DGEList or matrix object by dividing raw counts by library size (which can be normalized) and multiplying by one million.</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+cpm(x, normalized.lib.sizes=FALSE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+ 
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>either a matrix of counts or a <code>DGEList</code> object with (at least) elements <code>counts</code> (table of unadjusted counts) and <code>samples</code> (data frame containing information about experimental group, library size and normalization factor for the library size)</p>
+</td></tr>
+<tr valign="top"><td><code>normalized.lib.sizes</code></td>
+<td>
+<p>logical, should the library sizes (total sum of counts for each library) be normalized using the <code>norm.factors</code> component of the <code>DGEList</code> object? Ignored (with a warning) if <code>x</code> is a count matrix.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+
+<p>A convenience function to compute the counts per million for plotting and comparing libraries on a convenient scale. Essentially just does the calculation <code>1e06*t(t(x)/lib.size)</code> to produce counts per million, where <code>x</code> is a matrix of counts and the <code>lib.size</code> can be the total sum of counts in each library or a normalized version of this using TMM normalization or equivalent method.
+</p>
+
+
+<h3>Value</h3>
+
+<p><code>getPriorN</code> returns a numeric scalar </p>
+
+
+<h3>Author(s)</h3>
+
+<p>Davis McCarthy, Gordon Smyth</p>
+
+
+<h3>See Also</h3>
+
+
+<p><code><a href="DGEList.html">DGEList</a></code> for more information about the <code>DGEList</code> class.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+# generate raw counts from NB, create list object
+y&lt;-matrix(rnbinom(20,size=1,mu=10),nrow=5)
+cpm(y)
+d&lt;-DGEList(counts=y,group=rep(1:2,each=2),lib.size=rep(c(1000:1001),2))
+# When applied to a DGEList object, x$samples$lib.size is used
+cpm(d)
+# As x$samples$lib.size here is very different from colSums(y), cpm(y) and cpm(d) give very different results for the counts per million
+</pre>
+
+<hr><div align="center">[Package <em>edgeR</em> version 2.4.3 <a href="00Index.html">Index</a>]</div>
+</body></html>

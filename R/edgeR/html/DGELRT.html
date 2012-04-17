@@ -1,0 +1,60 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><title>R: Digital Gene Expression Likelihood Ratio Test data and...</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body>
+
+<table width="100%" summary="page for DGELRT-class {edgeR}"><tr><td>DGELRT-class {edgeR}</td><td align="right">R Documentation</td></tr></table>
+
+<h2>Digital Gene Expression Likelihood Ratio Test data and results - class</h2>
+
+<h3>Description</h3>
+
+
+<p>A simple list-based class for storing results of a GLM-based
+differential expression analysis for DGE data, with evidence for
+differential expression assessed using a likelihood ratio test.
+</p>
+
+
+<h3>Slots/List Components</h3>
+
+
+<p>Objects of this class contain the following list components:
+</p>
+<p><code>table</code>: data frame containing the log-concentration (i.e. expression level), the log-fold change in expression between the two groups/conditions and the exact p-value for differential expression, for each tag.
+</p>
+<p><code>coefficients.full</code>: matrix containing the coefficients
+computed from fitting the full model (fit using <code>glmFit</code> and a
+given design matrix) to each gene/tag in the dataset.
+</p>
+<p><code>coefficients.null</code>: matrix containing the coefficients
+computed from fitting the null model to each gene/tag in the
+dataset.  The null model is the model to which the full model is
+compared, and is fit using <code>glmFit</code> and dropping selected
+column(s) (i.e. coefficient(s)) from the design matrix for the full model.
+</p>
+<p><code>design</code>: design matrix for the full model from the likelihood
+ratio test.
+</p>
+<p><code>...</code>: if the argument <code>y</code> to <code>glmLRT</code> (which
+produces the <code>DGELRT</code> object) was itself a <code>DGEList</code> object, then
+the <code>DGELRT</code> will contain all of the elements of <code>y</code>,
+except for the table of counts and the table of pseudocounts.
+</p>
+
+
+<h3>Methods</h3>
+
+
+<p>This class inherits directly from class <code>list</code> so any operation appropriate for lists will work on objects of this class.
+<code>DGELRT</code> objects also have a <code>show</code> method.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Davis McCarthy</p>
+
+<hr><div align="center">[Package <em>edgeR</em> version 2.4.3 <a href="00Index.html">Index</a>]</div>
+</body></html>

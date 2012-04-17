@@ -1,0 +1,95 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><title>R: Compute Cox-Reid Adjusted Profile Likelihood for Negative...</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body>
+
+<table width="100%" summary="page for adjustedProfileLik {edgeR}"><tr><td>adjustedProfileLik {edgeR}</td><td align="right">R Documentation</td></tr></table>
+
+<h2>Compute Cox-Reid Adjusted Profile Likelihood for Negative Binomial GLMs</h2>
+
+<h3>Description</h3>
+
+
+<p>Compute the Cox-Reid Adjusted Profile-likelihood for many negative binomial (NB) GLMs.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+adjustedProfileLik(dispersion, y, design, offset, adjust=TRUE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+ 
+<table summary="R argblock">
+<tr valign="top"><td><code>dispersion</code></td>
+<td>
+<p>numeric scalar or vector giving the dispersion(s) towards which the tagwise dispersion parameters are shrunk.</p>
+</td></tr>
+<tr valign="top"><td><code>y</code></td>
+<td>
+<p>numeric matrix of counts</p>
+</td></tr>
+<tr valign="top"><td><code>design</code></td>
+<td>
+<p>numeric matrix giving the design matrix for the GLM that is to be fit.</p>
+</td></tr>
+<tr valign="top"><td><code>offset</code></td>
+<td>
+<p>numeric scalar, vector or matrix giving the offset (in addition to the log of the effective library size) that is to be included in the NB GLM for the transcripts. If a scalar, then this value will be used as an offset for all transcripts and libraries. If a vector, it should be have length equal to the number of libraries, and the same vector of offsets will be used for each transcript. If a matrix, then each library for each transcript can have a unique offset, if desired. In <code>adjustedProfileLik</code> the <code>offset</code> must be a matrix with the same dimension as the table of counts.</p>
+</td></tr>
+<tr valign="top"><td><code>adjust</code></td>
+<td>
+<p>logical, if <code>TRUE</code> then Cox-Reid adjustment is made to the log-likelihood, if <code>FALSE</code> then the log-likelihood is returned without adjustment. Default is <code>TRUE</code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+
+<p>In the <code>edgeR</code> context, <code>adjustedProfileLik</code> is a low-level function necessary for estimating dispersion parameters for NB GLMs. 
+</p>
+
+
+<h3>Value</h3>
+
+<p><code>adjustedProfileLik</code> produces a vector of Cox-Reid adjusted profile likelihoods for the given counts, dispersion  value, offset and design matrix (i.e. the APL for each gene/tag), which has the same length as the number of rows of the count datamatrix <code>y</code>.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Yunshun Chen, Gordon Smyth</p>
+
+
+<h3>References</h3>
+
+
+<p>Cox, DR, and Reid, N (1987). Parameter orthogonality and approximate conditional inference. <EM>Journal of the Royal Statistical Society Series B</EM> 49, 1-39.
+</p>
+
+
+<h3>See Also</h3>
+
+
+<p><code><a href="dispCoxReidInterpolateTagwise.html">dispCoxReidInterpolateTagwise</a></code>, <code><a href="estimateGLMTagwiseDisp.html">estimateGLMTagwiseDisp</a></code>, <code><a href="maximizeInterpolant.html">maximizeInterpolant</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+y &lt;- matrix(rnbinom(1000, mu=10, size=2), ncol=4)
+design &lt;- matrix(1, 4, 1)
+dispersion &lt;- 0.5
+apl &lt;- adjustedProfileLik(dispersion, y, design, offset=0)
+apl
+</pre>
+
+<hr><div align="center">[Package <em>edgeR</em> version 2.4.3 <a href="00Index.html">Index</a>]</div>
+</body></html>

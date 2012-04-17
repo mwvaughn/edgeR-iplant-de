@@ -1,0 +1,77 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><title>R: Get a Recommended Value for Prior N from DGEList Object</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body>
+
+<table width="100%" summary="page for getPriorN {edgeR}"><tr><td>getPriorN {edgeR}</td><td align="right">R Documentation</td></tr></table>
+
+<h2>Get a Recommended Value for Prior N from DGEList Object</h2>
+
+<h3>Description</h3>
+
+<p>Returns the <code>lib.size</code> component of the <code>samples</code> component of  DGEList object multiplied by the <code>norm.factors</code> component</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+getPriorN(y, design=NULL, prior.df=20)
+</pre>
+
+
+<h3>Arguments</h3>
+
+ 
+<table summary="R argblock">
+<tr valign="top"><td><code>y</code></td>
+<td>
+<p>a <code>DGEList</code> object with (at least) elements <code>counts</code> (table of unadjusted counts) and <code>samples</code> (data frame containing information about experimental group, library size and normalization factor for the library size)</p>
+</td></tr>
+<tr valign="top"><td><code>design</code></td>
+<td>
+<p>numeric matrix (optional argument) giving the design matrix for the GLM that is to be fit. Must be of full column rank. If provided <code>design</code> is used to determine the number of parameters to be fit in the statistical model and therefore the residual degrees of freedom. If left as the default (<code>NULL</code>) then the <code>y$samples$group</code> element of the <code>DGEList</code> object is used to determine the residual degrees of freedom.</p>
+</td></tr>
+<tr valign="top"><td><code>prior.df</code></td>
+<td>
+<p>numeric scalar giving the weight, in terms of prior degrees of freedom, to be given to the common parameter likelihood when estimating tagwise dispersion estimates.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+
+<p>When estimating tagwise dispersion values using <code><a href="estimateTagwiseDisp.html">estimateTagwiseDisp</a></code> or <code><a href="estimateGLMTagwiseDisp.html">estimateGLMTagwiseDisp</a></code> we need to decide how much weight to give to the common parameter likelihood in order to smooth (or stabilize) the dispersion estimates. The best choice of value for the <code>prior.n</code> parameter varies between datasets depending on the number of samples in the dataset and the complexity of the model to be fit. The value of <code>prior.n</code> should be inversely proportional to the residual degrees of freedom.  We have found that choosing a value for <code>prior.n</code> that is equivalent to giving the common parameter likelihood 20 degrees of freedom generally gives a good amount of smoothing for the tagwise dispersion estimates. This function simply recommends an appropriate value for <code>prior.n</code>&mdash;to be used as an argument for <code><a href="estimateTagwiseDisp.html">estimateTagwiseDisp</a></code> or <code><a href="estimateGLMTagwiseDisp.html">estimateGLMTagwiseDisp</a></code>&mdash;given the experimental design at hand and the chosen prior degrees of freedom.
+</p>
+
+
+<h3>Value</h3>
+
+<p><code>getPriorN</code> returns a numeric scalar </p>
+
+
+<h3>Author(s)</h3>
+
+<p>Davis McCarthy, Gordon Smyth</p>
+
+
+<h3>See Also</h3>
+
+
+<p><code><a href="DGEList.html">DGEList</a></code> for more information about the <code>DGEList</code> class.
+<code><a href="asmatrix.html">as.matrix.DGEList</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+# generate raw counts from NB, create list object
+y&lt;-matrix(rnbinom(20,size=1,mu=10),nrow=5)
+d&lt;-DGEList(counts=y,group=rep(1:2,each=2),lib.size=rep(c(1000:1001),2))
+getPriorN(d)
+</pre>
+
+<hr><div align="center">[Package <em>edgeR</em> version 2.4.3 <a href="00Index.html">Index</a>]</div>
+</body></html>

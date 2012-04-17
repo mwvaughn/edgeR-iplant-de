@@ -1,0 +1,84 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><title>R: Conditional Log-Likelihood in Terms of Delta</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body>
+
+<table width="100%" summary="page for condLogLikDerDelta {edgeR}"><tr><td>condLogLikDerDelta {edgeR}</td><td align="right">R Documentation</td></tr></table>
+
+<h2>Conditional Log-Likelihood in Terms of Delta</h2>
+
+<h3>Description</h3>
+
+<p>Conditional negative binomial log-likelihood parameterized in terms of delta (<code>phi / (phi+1)</code>) </p>
+
+
+<h3>Usage</h3>
+
+<pre>
+condLogLikDerDelta(y, delta, grid = TRUE, der = 1, doSum = TRUE) 
+</pre>
+
+
+<h3>Arguments</h3>
+
+ 
+<table summary="R argblock">
+<tr valign="top"><td><code>y</code></td>
+<td>
+<p>matrix with count data (or pseudocounts)</p>
+</td></tr>
+<tr valign="top"><td><code>delta</code></td>
+<td>
+<p>delta (<code>phi / (phi+1)</code>)parameter of negative binomial</p>
+</td></tr>
+<tr valign="top"><td><code>grid</code></td>
+<td>
+<p>logical, whether to calculate a grid over the values of delta</p>
+</td></tr>
+<tr valign="top"><td><code>der</code></td>
+<td>
+<p>derivative, either 0 (the function), 1 (first derivative) or 2 (second derivative)</p>
+</td></tr>
+<tr valign="top"><td><code>doSum</code></td>
+<td>
+<p>logical, whether to sum over samples or not (default <code>TRUE</code></p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+
+<p>This function computes the individual tag conditional log-likelihood for each tag. It is necessary for computing both the common conditional log-likelihood and the weighted conditional log-likelihood, which are used to find the common and tagwise (moderated) estimates of the dipsersion parameter. The delta scale for convenience (delta is bounded between 0 and 1). 
+</p>
+
+
+<h3>Value</h3>
+
+<p> vector or matrix of function/derivative evaluations</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Mark Robinson, Davis McCarthy</p>
+
+
+<h3>See Also</h3>
+
+
+<p><code><a href="commonCondLogLikDerDelta.html">commonCondLogLikDerDelta</a></code> and <code><a href="weightedCondLogLikDerDelta.html">weightedCondLogLikDerDelta</a></code> rely on <code>condLogLikDerDelta</code>, and at a user level, <code><a href="estimateCommonDisp.html">estimateCommonDisp</a></code> and <code><a href="estimateTagwiseDisp.html">estimateTagwiseDisp</a></code> are used to estimate the common and (moderated) tagwise dispersion estimates, respectively. <code>condLogLikDerDelta</code> calls <code>condLogLikDerSize</code>, the function that does the mathematical calculations.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+y1&lt;-matrix(rnbinom(10,size=1,mu=10),nrow=5)
+v1&lt;-seq(.1,.9,length=9)
+ll1&lt;-condLogLikDerDelta(y1,v1,grid=TRUE,der=0,doSum=FALSE)
+ll2&lt;-condLogLikDerDelta(y1,delta=.5,grid=FALSE,der=0)
+</pre>
+
+<hr><div align="center">[Package <em>edgeR</em> version 2.4.3 <a href="00Index.html">Index</a>]</div>
+</body></html>

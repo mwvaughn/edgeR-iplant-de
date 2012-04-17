@@ -1,0 +1,153 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><title>R: Multidimensional scaling plot of digital gene expression...</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body>
+
+<table width="100%" summary="page for plotMDS.DGEList {edgeR}"><tr><td>plotMDS.DGEList {edgeR}</td><td align="right">R Documentation</td></tr></table>
+
+<h2>Multidimensional scaling plot of digital gene expression profiles</h2>
+
+<h3>Description</h3>
+
+
+<p>Calculate distances between RNA-seq or DGE libraries, then produce a multidimensional scaling plot.
+Distances on the plot represent coefficient of variation of expression between samples
+for the top genes that best distinguish the samples.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+## S3 method for class 'DGEList'
+plotMDS(x, top=500, labels=colnames(x), col=NULL, cex=1, dim.plot=c(1, 2), ndim=max(dim.plot), xlab=paste("Dimension",dim.plot[1]), ylab=paste("Dimension",dim.plot[2]), ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>any matrix or <code>DGEList</code> object.</p>
+</td></tr>
+<tr valign="top"><td><code>top</code></td>
+<td>
+<p>number of top genes used to calculate pairwise distances.</p>
+</td></tr>
+<tr valign="top"><td><code>labels</code></td>
+<td>
+<p>character vector of sample names or labels. If <code>x</code> has no column names, then defaults the index of the samples.</p>
+</td></tr>
+<tr valign="top"><td><code>col</code></td>
+<td>
+<p>numeric or character vector of colors for the plotting characters. See <code><a href="../../graphics/html/text.html">text</a></code> for possible values.</p>
+</td></tr>
+<tr valign="top"><td><code>cex</code></td>
+<td>
+<p>numeric vector of plot symbol expansions. See <code><a href="../../graphics/html/text.html">text</a></code> for possible values.</p>
+</td></tr>
+<tr valign="top"><td><code>dim.plot</code></td>
+<td>
+<p>which two dimensions should be plotted, numeric vector of length two.</p>
+</td></tr>
+<tr valign="top"><td><code>ndim</code></td>
+<td>
+<p>number of dimensions in which data is to be represented</p>
+</td></tr>
+<tr valign="top"><td><code>xlab</code></td>
+<td>
+<p>title for the x-axis</p>
+</td></tr>
+<tr valign="top"><td><code>ylab</code></td>
+<td>
+<p>title for the y-axis</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>any other arguments are passed to <code>plot</code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+
+<p>This function is a variation on the usual multdimensional scaling (or principle coordinate) plot, in that a distance measure particularly appropriate for the digital gene expression (DGE) context is used.
+A set of top genes are chosen that have largest biological variation between the libraries
+(those with largest tagwise dispersion treating all libraries as one group).
+Then the distance between each pair of libraries (columns) is the biological coefficient of variation (square root of the common dispersion) between those two libraries alone, using
+the top genes.
+</p>
+<p>The number <code>top</code> of top genes chosen for this exercise should roughly correspond to the number of differentially expressed genes with materially large fold-changes.
+The default setting of 500 genes is widely effective and suitable for routine use, but a smaller value might be chosen for when the samples are distinguished by a specific focused molecular pathway.
+Very large values (greater than 1000) are not usually so effective.
+</p>
+<p>This function can be slow when there are many libraries.
+</p>
+
+
+<h3>Value</h3>
+
+
+<p>A plot is created on the current graphics device.
+</p>
+<p>An object of class <code>"MDS"</code> is invisibly returned.
+This is a list containing the following components:
+</p>
+<table summary="R valueblock">
+<tr valign="top"><td><code>distance.matrix</code></td>
+<td>
+<p>numeric matrix of pairwise distances between columns of <code>x</code></p>
+</td></tr>
+<tr valign="top"><td><code>cmdscale.out</code></td>
+<td>
+<p>output from the function <code>cmdscale</code> given the distance matrix</p>
+</td></tr>
+<tr valign="top"><td><code>dim.plot</code></td>
+<td>
+<p>dimensions plotted</p>
+</td></tr>
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>x-xordinates of plotted points</p>
+</td></tr>
+<tr valign="top"><td><code>y</code></td>
+<td>
+<p>y-cordinates of plotted points</p>
+</td></tr>
+</table>
+
+
+<h3>Author(s)</h3>
+
+<p>Yunshun Chen and Gordon Smyth</p>
+
+
+<h3>See Also</h3>
+
+
+<p><code><a href="../../stats/html/cmdscale.html">cmdscale</a></code>, <code><a href="../../stats/html/dist.html">as.dist</a></code>, <code><a href="../../limma/html/plotMDS.html">plotMDS</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+# Simulate DGE data for 1000 genes(tags) and 6 samples.
+# Samples are in two groups
+# First 300 genes are differentially expressed in second group
+
+y &lt;- matrix(rnbinom(6000, size = 1/2, mu = 10),1000,6)
+rownames(y) &lt;- paste("Gene",1:1000)
+y[1:300,4:6] &lt;- y[1:300,4:6] + 10
+# without labels, indexes of samples are plotted.
+mds &lt;- plotMDS(y,  col=c(rep("black",3), rep("red",3)) )
+# or labels can be provided, here group indicators:
+plotMDS(mds,  col=c(rep("black",3), rep("red",3)), labels= c(rep("Grp1",3), rep("Grp2",3)))
+</pre>
+
+<hr><div align="center">[Package <em>edgeR</em> version 2.4.3 <a href="00Index.html">Index</a>]</div>
+</body></html>

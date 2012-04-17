@@ -1,0 +1,78 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><title>R: Multiple Testing Across Genes and Contrasts</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body>
+
+<table width="100%" summary="page for decideTestsDGE {edgeR}"><tr><td>decideTestsDGE {edgeR}</td><td align="right">R Documentation</td></tr></table>
+
+<h2>Multiple Testing Across Genes and Contrasts</h2>
+
+<h3>Description</h3>
+
+
+<p>Classify a series of related differential expression statistics as up, down or not significant.
+A number of different multiple testing schemes are offered which adjust for multiple testing down the genes as well as across contrasts for each gene.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+decideTestsDGE(object, adjust.method="BH", p.value=0.05)
+</pre>
+
+
+<h3>Arguments</h3>
+
+
+<table summary="R argblock">
+<tr valign="top"><td><code>object</code></td>
+<td>
+<p><code>deDGElist</code> object, output from <code>exactTest</code>,
+or <code>DGELRT</code> object, output from <code>DGELRT</code>, from which
+p-values for differential expression and log-fold change values may be extracted.</p>
+</td></tr>
+<tr valign="top"><td><code>adjust.method</code></td>
+<td>
+<p>character string specifying p-value adjustment method.  Possible values are <code>"none"</code>, <code>"BH"</code>, <code>"fdr"</code> (equivalent to <code>"BH"</code>), <code>"BY"</code> and <code>"holm"</code>. See <code><a href="../../stats/html/p.adjust.html">p.adjust</a></code> for details.</p>
+</td></tr>
+<tr valign="top"><td><code>p.value</code></td>
+<td>
+<p>numeric value between 0 and 1 giving the desired size of the test</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+
+<p>These functions implement multiple testing procedures for determining
+whether each log-fold change in a matrix of log-fold changes should be considered significantly different from zero.
+</p>
+
+
+<h3>Value</h3>
+
+
+<p>An object of class <code>TestResults</code> (see <code><a href="../../limma/html/TestResults.html">TestResults</a></code>).
+This is essentially a numeric matrix with elements <code>-1</code>, <code>0</code>
+or <code>1</code> depending on whether each DE p-value is classified as
+significant with negative log-fold change, not significant or
+significant with positive log-fold change, respectively.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Davis McCarthy, Gordon Smyth</p>
+
+
+<h3>See Also</h3>
+
+
+<p>Adapted from <code><a href="../../limma/html/decideTests.html">decideTests</a></code> in the limma package.
+</p>
+
+<hr><div align="center">[Package <em>edgeR</em> version 2.4.3 <a href="00Index.html">Index</a>]</div>
+</body></html>

@@ -1,0 +1,164 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><title>R: Exact Tests for Differences between Two Groups of...</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body>
+
+<table width="100%" summary="page for exactTest {edgeR}"><tr><td>exactTest {edgeR}</td><td align="right">R Documentation</td></tr></table>
+
+<h2>Exact Tests for Differences between Two Groups of Negative-Binomial Counts</h2>
+
+<h3>Description</h3>
+
+<p>Compute genewise exact tests for differences in the means between two groups of negative-binomially distributed counts.</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+exactTest(object, pair=NULL, dispersion="auto", rejection.region="doubletail", big.count=900)
+exactTestDoubleTail(y1, y2, dispersion=0, big.count=900)
+exactTestBySmallP(y1, y2, dispersion=0, big.count=900)
+exactTestByDeviance(y1, y2, dispersion=0, big.count=900)
+exactTestBetaApprox(y1, y2, dispersion=0)
+</pre>
+
+
+<h3>Arguments</h3>
+
+
+<table summary="R argblock">
+<tr valign="top"><td><code>object</code></td>
+<td>
+<p>an object of class <code><a href="DGEList%2dclass.html">DGEList</a></code>.</p>
+</td></tr>
+<tr valign="top"><td><code>pair</code></td>
+<td>
+<p>vector of length two, either numeric or character, providing the pair of groups to be compared; if a character vector, then should be the names of two groups (e.g. two levels of <code>object$samples$group</code>); if numeric, then groups to be compared are chosen by finding the levels of <code>object$samples$group</code> corresponding to those numeric values and using those levels as the groups to be compared; if <code>NULL</code>, then first two levels of <code>object$samples$group</code> (a factor) are used. Note that the first group listed in the pair is the baseline for the comparison&mdash;so if the pair is <code>c("A","B")</code> then the comparison is <code>B - A</code>, so genes with positive log-fold change are up-regulated in group B compared with group A (and vice versa for genes with negative log-fold change).</p>
+</td></tr>
+<tr valign="top"><td><code>dispersion</code></td>
+<td>
+
+<p>either a numeric vector of dispersions or a character string indicating that dispersions should be taken from the data object.
+If a numeric vector, then can be either of length one or of length equal to the number of tags.
+Allowable character values are <code>"common"</code>, <code>"tagwise"</code> or <code>"auto"</code>.
+<code>"common"</code> uses <code>object$common.dispersion</code>, <code>"tagwise"</code> uses <code>object$tagwise.dispersion</code> and <code>"auto"</code> uses tagwise when available and otherwise common.
+</p>
+</td></tr>
+<tr valign="top"><td><code>rejection.region</code></td>
+<td>
+<p>type of rejection region for two-sided exact test.  Possible values are <code>"doubletail"</code>, <code>"smallp"</code> or <code>"deviance"</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>big.count</code></td>
+<td>
+<p>count size above which asymptotic beta approximation will be used.</p>
+</td></tr>
+<tr valign="top"><td><code>y1</code></td>
+<td>
+<p>numeric matrix of counts for the first the two experimental groups to be tested for differences.
+Rows correspond to genes or transcripts and columns to libraries.
+Libraries are assumed to be equal in size - e.g. adjusted pseudocounts from the output of <code><a href="equalizeLibSizes.html">equalizeLibSizes</a></code>.</p>
+</td></tr>
+<tr valign="top"><td><code>y2</code></td>
+<td>
+<p>numeric matrix of counts for the second of the two experimental groups to be tested for differences.
+Rows correspond to genes or transcripts and columns to libraries.
+Libraries are assumed to be equal in size - e.g. adjusted pseudocounts from the output of <code><a href="equalizeLibSizes.html">equalizeLibSizes</a></code>. Must have the same number of rows as <code>y1</code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+
+<p>The functions test for differential expression between two groups of count libraries.
+They implement the exact test proposed by Robinson and Smyth (2008) for a difference in mean between two groups of negative binomial random variables.
+The functions accept two groups of count libraries, and a test is performed for each row of data.
+For each row, the test is conditional on the sum of counts for that row.
+The test can be viewed as a generalization of the well-known exact binomial test, implemented in the function <code>binom.test</code> in the stats package, but generalized to overdispersed counts.
+</p>
+<p>The low level functions <code>exactTestDoubleTail</code>, <code>exactTestBetaApprox</code>, <code>exactTestBySmallP</code> and <code>exactTestByDeviance</code> all assume
+that the libraries have been normalized to have the same size (expected column sum under the null hypothesis).
+The higher level function <code>exactTest</code> is intended to be called by users.
+This has a more object-orientated flavor and produces an object containing all the necessary components for downstream analysis.
+<code>exactTest</code> equalizes the library sizes using <code><a href="equalizeLibSizes.html">equalizeLibSizes</a></code> before calling one of the low level functions.
+</p>
+<p>The functions <code>exactTestDoubleTail</code>, <code>exactTestBySmallP</code> and <code>exactTestByDeviance</code> correspond to different ways to define the two-sided rejection region when the two groups have different numbers of samples.
+<code>exactTestBySmallP</code> implements the method of small probabilities as proposed by Robinson and Smyth (2008).
+This method corresponds to <code>binom.test</code> when the dispersion is near zero, but gives poor results when the dispersion is very large.
+<code>exactTestDoubleTail</code> computes two-sided p-values by doubling the smaller tail probability.
+<code>exactTestByDeviance</code> uses the deviance goodness of fit statistics to define the rejection region, and is therefore equivalent to a conditional likelihood ratio test.
+This has good statistical properties but is relatively slow to compute.
+For general remarks on different types of rejection regions for exact tests see Gibbons and Pratt (1975).
+</p>
+<p><code>exactTestBetaApprox</code> implements an asymptotical beta distribution approximation to the conditional count distribution.
+</p>
+
+
+<h3>Value</h3>
+
+
+<p><code>exactTestDoubleTail</code> and friends produce a numeric vector of genewise p-values, one for each row of <code>y1</code> and <code>y2</code>.
+</p>
+<p><code>exactTest</code> produces an object of class <code>DGEExact</code> containing the following components:
+</p>
+<table summary="R valueblock">
+<tr valign="top"><td><code>table</code></td>
+<td>
+<p>a data frame containing the elements <code>logConc</code>, the log-average concentration/abundance for each tag in the two groups being compared, <code>logFC</code>, the log-abundance ratio, i.e. fold change, for each tag in the two groups being compared, <code>p.value</code>, exact p-value for differential expression using the NB model</p>
+</td></tr>
+<tr valign="top"><td><code>comparison</code></td>
+<td>
+<p>a vector giving the names of the two groups being compared</p>
+</td></tr> 
+<tr valign="top"><td><code>genes</code></td>
+<td>
+<p>a data frame containing information about each transcript; taken from <code>object</code> and can be <code>NULL</code></p>
+</td></tr>
+</table>
+
+
+<h3>Author(s)</h3>
+
+<p>Mark Robinson, Davis McCarthy, Gordon Smyth</p>
+
+
+<h3>References</h3>
+
+
+<p>Robinson MD and Smyth GK (2008). Small-sample estimation of negative binomial dispersion, with applications to SAGE data.
+<EM>Biostatistics</EM>, 9, 321-332.
+</p>
+<p>Gibbons, JD and Pratt, JW (1975).  P-values: interpretation and methodology.
+<EM>The American Statistician</EM> 29, 20-25.
+</p>
+
+
+<h3>See Also</h3>
+
+
+<p><code><a href="equalizeLibSizes.html">equalizeLibSizes</a></code>, <code><a href="binomTest.html">binomTest</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+# generate raw counts from NB, create list object
+y &lt;- matrix(rnbinom(80,size=1/0.2,mu=10),nrow=20,ncol=4)
+rownames(y) &lt;- paste("Gene",1:nrow(y),sep=".")
+group &lt;- factor(c(1,1,2,2))
+d &lt;- DGEList(counts=y,group=group,lib.size=rep(1000,4))
+
+# estimate dispersions and find differences in expression
+d &lt;- estimateCommonDisp(d)
+d &lt;- estimateTagwiseDisp(d)
+de &lt;- exactTest(d)
+topTags(de)
+
+# same example using low level exactTest function directly
+p.value &lt;- exactTestDoubleTail(y[,1:2],y[,3:4],dispersion=0.2)
+</pre>
+
+<hr><div align="center">[Package <em>edgeR</em> version 2.4.3 <a href="00Index.html">Index</a>]</div>
+</body></html>

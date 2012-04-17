@@ -1,0 +1,84 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><title>R: Estimate Expression Levels</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body>
+
+<table width="100%" summary="page for estimatePs {edgeR}"><tr><td>estimatePs {edgeR}</td><td align="right">R Documentation</td></tr></table>
+
+<h2>Estimate Expression Levels</h2>
+
+<h3>Description</h3>
+
+<p>Estimate expression levels (i.e. proportion of all sample mRNA corresponding to each tag; or, concentration of mRNA for each tag in sample mRNA) using maximum likelihood with dispersion parameter fixed based on the negative binomial model for each tag/gene and sample group. Expression proportions are used to determine overall abundance of each tag/gene and differential expression of tags/genes between groups.</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+estimatePs(object, r, tol = 1e-10, maxit = 30) 
+</pre>
+
+
+<h3>Arguments</h3>
+
+ 
+<table summary="R argblock">
+<tr valign="top"><td><code>object</code></td>
+<td>
+<p>list containing (at least) the elements <code>counts</code> (table of counts), <code>group</code> (vector or factor indicating group) and <code>lib.size</code> (numeric vector of library sizes)</p>
+</td></tr>
+<tr valign="top"><td><code>r</code></td>
+<td>
+<p>numeric vector providing the size parameter of negative binomial model (<code>size</code> = <code>1/phi</code> where <code>phi</code> is the dispersion parameter in the NB model)</p>
+</td></tr>
+<tr valign="top"><td><code>tol</code></td>
+<td>
+<p>numeric scalar, tolerance between iterations</p>
+</td></tr>
+<tr valign="top"><td><code>maxit</code></td>
+<td>
+<p>positive integer scalar, maximum number of iterations</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+
+<p>The Newton-Raphson method is used to calculate iteratively the maximum likelihood estimate of the expression level (i.e. concentration of mRNA for a particular tag in the sample mRNA) for each tag/gene.
+</p>
+
+
+<h3>Value</h3>
+
+<p>A list with elements:
+</p>
+<table summary="R valueblock">
+<tr valign="top"><td><code>conc.common</code></td>
+<td>
+<p>numeric vector giving overall proportion/concentration for each tag</p>
+</td></tr>
+<tr valign="top"><td><code>conc.group</code></td>
+<td>
+<p>numeric matrix with columns giving estimates of tag/gene concentrations (proportion of total RNA for that group that that particular tag/gene contributes) for different groups)</p>
+</td></tr>
+</table>
+
+
+<h3>Author(s)</h3>
+
+<p>Mark Robinson, Davis McCarthy</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+set.seed(0)
+y&lt;-matrix(rnbinom(40,size=1,mu=10),ncol=4)
+d&lt;-DGEList(counts=y,group=rep(1:2,each=2),lib.size=rep(c(1000:1001),2))
+conc&lt;-estimatePs(d,r=1)
+</pre>
+
+<hr><div align="center">[Package <em>edgeR</em> version 2.4.3 <a href="00Index.html">Index</a>]</div>
+</body></html>

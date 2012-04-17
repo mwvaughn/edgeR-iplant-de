@@ -1,0 +1,160 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><title>R: Install or update Bioconductor and CRAN packages</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body>
+
+<table width="100%" summary="page for biocLite {BiocInstaller}"><tr><td>biocLite {BiocInstaller}</td><td align="right">R Documentation</td></tr></table>
+
+<h2>
+Install or update Bioconductor and CRAN packages
+</h2>
+
+<h3>Description</h3>
+
+
+<p><code>biocLite</code> installs or updates Bioconductor and CRAN packages,
+ensuring that packages from the appropriate version of Bioconductor
+are installed, and that all packages remain up to date.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+biocLite (pkgs=c("Biobase","IRanges","AnnotationDbi"),  
+  suppressUpdates=FALSE,
+  suppressAutoUpdate=FALSE,
+  ask=TRUE, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+
+<table summary="R argblock">
+<tr valign="top"><td><code>pkgs</code></td>
+<td>
+<p><code>character()</code> of package names to install or update.
+A value of <code>character(0)</code> and <code>suppressUpdates=FALSE</code>
+updates packages without installing new ones.</p>
+</td></tr>
+<tr valign="top"><td><code>suppressUpdates</code></td>
+<td>
+<p><code>logical(1)</code> indicating whether to
+suppress automatic updating of all installed packages, or
+<code>character()</code> of regular expressions specifying which packages
+to NOT automatically update.</p>
+</td></tr>
+<tr valign="top"><td><code>suppressAutoUpdate</code></td>
+<td>
+<p><code>logical(1)</code> indicating whether the
+<code>BiocInstaller</code> package updates itself.</p>
+</td></tr>
+<tr valign="top"><td><code>ask</code></td>
+<td>
+<p><code>logical(1)</code> indicating whether to prompt user before
+installed packages are updated, or the character string 'graphics',
+which brings up a widget for choosing which packages to update.
+If TRUE, user can choose whether to update all outdated packages
+without further prompting, to pick and choose packages to update,
+or to cancel updating (in a non-interactive session, no packages
+will be updated). Otherwise, the value is passed to
+<code><a href="../../utils/html/update.packages.html">update.packages</a></code>.</p>
+</td></tr> 
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>Additional arguments passed to <code><a href="../../utils/html/install.packages.html">install.packages</a></code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+
+<p>The <code>biocLite()</code> function is generally used after sourcing the
+file <code>biocLite.R</code>. This will install the <code>BiocInstaller</code> package
+if it is not already installed. See example section for more information.
+</p>
+
+
+<h3>Value</h3>
+
+
+<p><code>biocLite()</code> returns the <code>pkgs</code> argument, invisibly.
+</p>
+
+
+<h3>See Also</h3>
+
+
+<p><code><a href="biocinstallRepos.html">biocinstallRepos</a></code> returns the Bioconductor and CRAN
+repositories used by <code>biocLite</code>.
+</p>
+<p><code><a href="../../utils/html/install.packages.html">install.packages</a></code> installs the packages themselves.
+</p>
+<p><code><a href="../../utils/html/update.packages.html">update.packages</a></code> updates all installed packages.
+</p>
+<p><code><a href="../../utils/html/chooseBioCmirror.html">chooseBioCmirror</a></code> lets you choose from a list of all
+public Bioconductor mirror URLs.
+</p>
+<p><code><a href="../../utils/html/chooseCRANmirror.html">chooseCRANmirror</a></code> lets you choose from a list of all
+public CRAN mirror URLs.
+</p>
+<p><code><a href="packageGroups.html">monograph_group</a></code>, <code><a href="packageGroups.html">RBioinf_group</a></code> and
+<code><a href="packageGroups.html">biocases_group</a></code> return package names associated 
+with Bioconductor publications.
+</p>
+<p><code><a href="packageGroups.html">all_group</a></code> returns the names of all Bioconductor
+software packages.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+## Change default Bioconductor and CRAN mirrors
+chooseBioCmirror()
+chooseCRANmirror()
+
+
+## If you don't have the BiocInstaller package installed, you can 
+## quickly install and load it as follows:
+source("http://bioconductor.org/biocLite.R")
+
+
+## The most recent version of the BiocInstaller package is now loaded.
+## No need to load it with library().
+biocLite() # installs default packages
+
+
+## Now install a CRAN package:
+biocLite("survival")
+
+## install a Bioconductor package, but don't update all installed
+## packages as well:
+biocLite("GenomicRanges", suppressUpdates=TRUE)
+
+## Install default packages, but do not update any package whose name
+## starts with "org." or "BSgenome."
+biocLite(suppressUpdates=c("^org\.", "^BSgenome\."))
+
+## install a package from source:
+biocLite("IRanges", type="source")
+
+## don't install any packages, but update installed packages
+biocLite(character(0), ask=FALSE)
+
+## install all Bioconductor software packages
+biocLite(all_group())
+
+
+## End(Not run)
+## Show the Bioconductor and CRAN repositories that will be used to
+## install/update packages.
+biocinstallRepos()
+</pre>
+
+<hr><div align="center">[Package <em>BiocInstaller</em> version 1.2.1 <a href="00Index.html">Index</a>]</div>
+</body></html>

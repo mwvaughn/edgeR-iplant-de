@@ -1,0 +1,128 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><title>R: Plots log-Fold Change versus log-Concentration (or, M versus...</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body>
+
+<table width="100%" summary="page for plotSmear {edgeR}"><tr><td>plotSmear {edgeR}</td><td align="right">R Documentation</td></tr></table>
+
+<h2>
+Plots log-Fold Change versus log-Concentration (or, M versus A) for Count Data
+</h2>
+
+<h3>Description</h3>
+
+
+<p>Both of these functions plot the log-fold change (i.e. the log of the ratio of expression levels for each tag between two experimential groups) against the log-concentration (i.e. the overall average expression level for each tag across the two groups). To represent counts that were low (e.g. zero in 1 library and non-zero in the other) in one of the two conditions, a 'smear' of points at low A value is presented in <code>plotSmear</code>.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+plotSmear(object, pair = NULL, de.tags=NULL, xlab = "logConc", ylab =
+"logFC", pch = 19, cex = 0.2, smearWidth = 0.5, panel.first=grid(),
+smooth.scatter=FALSE, lowess=FALSE, ...)
+
+</pre>
+
+
+<h3>Arguments</h3>
+
+
+<table summary="R argblock">
+<tr valign="top"><td><code>object</code></td>
+<td>
+<p><code>DGEList</code> or <code>DGELRT</code> object containing data to produce an MA-plot.</p>
+</td></tr>
+<tr valign="top"><td><code>pair</code></td>
+<td>
+<p>pair of experimental conditions to plot (if <code>NULL</code>, the first two conditions are used)</p>
+</td></tr>
+<tr valign="top"><td><code>de.tags</code></td>
+<td>
+<p>rownames for tags identified as being differentially expressed; use <code>exactTest</code> to identify DE genes</p>
+</td></tr>
+<tr valign="top"><td><code>xlab</code></td>
+<td>
+<p>x-label of plot</p>
+</td></tr>
+<tr valign="top"><td><code>ylab</code></td>
+<td>
+<p>y-label of plot</p>
+</td></tr>
+<tr valign="top"><td><code>pch</code></td>
+<td>
+<p>scalar or vector giving the character(s) to be used in the plot; default value of <code>19</code> gives a round point.</p>
+</td></tr>
+<tr valign="top"><td><code>cex</code></td>
+<td>
+<p>character expansion factor, numerical value giving the amount by which plotting text and symbols should be magnified relative to the default; default <code>cex=0.2</code> to make the plotted points smaller</p>
+</td></tr>
+<tr valign="top"><td><code>smearWidth</code></td>
+<td>
+<p>width of the smear</p>
+</td></tr>
+<tr valign="top"><td><code>panel.first</code></td>
+<td>
+<p>an expression to be evaluated after the plot axes are set up but before any plotting takes place; the default <code>grid()</code> draws a background grid to aid interpretation of the plot</p>
+</td></tr>
+<tr valign="top"><td><code>smooth.scatter</code></td>
+<td>
+<p>logical, whether to produce a 'smooth scatter' plot using the KernSmooth::smoothScatter function or just a regular scatter plot; default is <code>FALSE</code>, i.e. produce a regular scatter plot</p>
+</td></tr>
+<tr valign="top"><td><code>lowess</code></td>
+<td>
+<p>logical, indicating whether or not to add a lowess curve to the MA-plot to give an indication of any trend in teh log-fold change with log-concentration</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>further arguments passed on to <code>plot</code></p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+
+<p><code>plotSmear</code> is a more sophisticated and superior way to produce an 'MA plot'. <code>plotSmear</code> resolves the problem of plotting tags that have a total count of zero for one of the groups by adding the 'smear' of points at low A value. The points to be smeared are identified as being equal to the minimum estimated concentration in one of the two groups.  The smear is created by using random uniform numbers of width <code>smearWidth</code> to the left of the minimum A. <code>plotSmear</code> also allows easy highlighting of differentially expressed (DE) tags.
+</p>
+
+
+<h3>Value</h3>
+
+<p>A plot to the current device</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Mark Robinson, Davis McCarthy</p>
+
+
+<h3>See Also</h3>
+
+
+<p><code><a href="maPlot.html">maPlot</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+y &lt;- matrix(rnbinom(10000,mu=5,size=2),ncol=4)
+d &lt;- DGEList(counts=y, group=rep(1:2,each=2), lib.size=colSums(y))
+rownames(d$counts) &lt;- paste("tag",1:nrow(d$counts),sep=".")
+d &lt;- estimateCommonDisp(d)
+plotSmear(d)
+
+# find differential expression
+de &lt;- exactTest(d)
+
+# highlighting the top 500 most DE tags
+de.tags &lt;- rownames(topTags(de, n=500)$table)
+plotSmear(d, de.tags=de.tags)
+
+</pre>
+
+<hr><div align="center">[Package <em>edgeR</em> version 2.4.3 <a href="00Index.html">Index</a>]</div>
+</body></html>

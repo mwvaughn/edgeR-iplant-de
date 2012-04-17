@@ -1,0 +1,105 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><title>R: Goodness of Fit Tests for Multiple GLM Fits</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body>
+
+<table width="100%" summary="page for gof {edgeR}"><tr><td>gof {edgeR}</td><td align="right">R Documentation</td></tr></table>
+
+<h2>Goodness of Fit Tests for Multiple GLM Fits</h2>
+
+<h3>Description</h3>
+
+<p>Conducts deviance goodness of fit tests for each fit in a <code>DGEGLM</code> object</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+gof(glmfit, pcutoff=0.1) 
+</pre>
+
+
+<h3>Arguments</h3>
+
+ 
+<table summary="R argblock">
+<tr valign="top"><td><code>glmfit</code></td>
+<td>
+<p><code>DGEGLM</code> object containing results from fitting NB GLMs to genes in a DGE dataset. Output from <code>glmFit</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>pcutoff</code></td>
+<td>
+<p>scalar giving the cut-off value for the Holm-adjusted p-value. Genes with Holm-adjusted p-values lower than this cutoff value are flagged as &lsquo;dispersion outlier&rsquo; genes.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+
+<p>This function returns a list with the following components:
+</p>
+<table summary="R valueblock">
+<tr valign="top"><td><code>gof.statistics</code></td>
+<td>
+<p>numeric vector of deviance statistics, which are the statistics used for the goodness of fit test</p>
+</td></tr>
+<tr valign="top"><td><code>gof.pvalues</code></td>
+<td>
+<p>numeric vector of p-values providing evidence of poor fit; computed from the chi-square distribution on the residual degrees of freedom from the GLM fits.</p>
+</td></tr>
+<tr valign="top"><td><code>outlier</code></td>
+<td>
+<p>logical vector indicating whether or not each gene is a &lsquo;dispersion outlier&rsquo; (i.e.~the model fit is poor for that gene indicating that the dispersion estimate is not good for that gene).</p>
+</td></tr> 
+<tr valign="top"><td><code>df</code></td>
+<td>
+<p>scalar, the residual degrees of freedom from the GLM fit for which the goodness of fit statistics have been computed. Also the degrees of freedom for the goodness of fit statistics for the LR (chi-quare) test for significance.</p>
+</td></tr>
+</table>
+
+
+<h3>Author(s)</h3>
+
+<p>Davis McCarthy</p>
+
+
+<h3>See Also</h3>
+
+
+<p><code><a href="glmfit.html">glmFit</a></code> for more information on fitting NB GLMs to DGE data.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+nlibs &lt;- 3
+ntags &lt;- 100
+dispersion.true &lt;- 0.1
+
+# Make first transcript respond to covariate x
+x &lt;- 0:2
+design &lt;- model.matrix(~x)
+beta.true &lt;- cbind(Beta1=2,Beta2=c(2,rep(0,ntags-1)))
+mu.true &lt;- 2^(beta.true %*% t(design))
+
+# Generate count data
+y &lt;- rnbinom(ntags*nlibs,mu=mu.true,size=1/dispersion.true)
+y &lt;- matrix(y,ntags,nlibs)
+colnames(y) &lt;- c("x0","x1","x2")
+rownames(y) &lt;- paste("Gene",1:ntags,sep="")
+d &lt;- DGEList(y)
+
+# Normalize
+d &lt;- calcNormFactors(d)
+
+# Fit the NB GLMs
+fit &lt;- glmFit(d, design, dispersion=dispersion.true)
+# Check how good the fit is for each gene
+gof(fit)
+</pre>
+
+<hr><div align="center">[Package <em>edgeR</em> version 2.4.3 <a href="00Index.html">Index</a>]</div>
+</body></html>

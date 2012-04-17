@@ -1,0 +1,65 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><title>R: Log-Likelihood of the Common Dispersion for a Single...</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body>
+
+<table width="100%" summary="page for condLogLikDerSize {edgeR}"><tr><td>condLogLikDerSize {edgeR}</td><td align="right">R Documentation</td></tr></table>
+
+<h2>Log-Likelihood of the Common Dispersion for a Single Equalized Group</h2>
+
+<h3>Description</h3>
+
+<p>Derivatives of the conditional negative-binomial log-likelihood (for each tag/transcript) with respect to the common dispersion parameter, for a single group of replicate libraries of the same size.
+Parameterized in terms of size or precision (<code>1/phi</code>).</p>
+
+
+<h3>Usage</h3>
+
+<pre>condLogLikDerSize(y, r, der=1)</pre>
+
+
+<h3>Arguments</h3>
+
+ 
+<table summary="R argblock">
+<tr valign="top"><td><code>y</code></td>
+<td>
+<p>matrix of (pseudo) count data</p>
+</td></tr>
+<tr valign="top"><td><code>r</code></td>
+<td>
+<p>size parameter of negative binomial distribution</p>
+</td></tr>
+<tr valign="top"><td><code>der</code></td>
+<td>
+<p>order of derivative required, either 0 (the function), 1 (first derivative) or 2 (second derivative)</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The library sizes must be equalized before running this function. This function carries out the actual mathematical computations for the conditional log-likelihood and its derivatives, calculating the conditional log-likelihood for each tag/transcript.
+</p>
+
+
+<h3>Value</h3>
+
+<p>vector of function/derivative evaluations, one for each transcript</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Mark Robinson, Davis McCarthy</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+y &lt;- matrix(rnbinom(10,size=1,mu=10),nrow=5)
+condLogLikDerSize(y,r=1,der=1)
+</pre>
+
+<hr><div align="center">[Package <em>edgeR</em> version 2.4.3 <a href="00Index.html">Index</a>]</div>
+</body></html>

@@ -1,0 +1,85 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><title>R: Retrieve the Dimensions of a DGEList, DGEExact, DGEGLM,...</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body>
+
+<table width="100%" summary="page for dim {edgeR}"><tr><td>dim {edgeR}</td><td align="right">R Documentation</td></tr></table>
+
+<h2>Retrieve the Dimensions of a DGEList, DGEExact, DGEGLM, DGELRT or TopTags Object</h2>
+
+<h3>Description</h3>
+
+
+<p>Retrieve the number of rows (transcripts) and columns (libraries) for an DGEList, DGEExact or TopTags Object.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+## S3 method for class 'DGEList'
+dim(x)
+## S3 method for class 'DGEList'
+length(x)
+</pre>
+
+
+<h3>Arguments</h3>
+
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>an object of class <code>DGEList</code>, <code>DGEExact</code>, <code>TopTags</code>, <code>DGEGLM</code> or <code>DGELRT</code></p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+
+<p>Digital gene expression data objects share many analogies with ordinary matrices in which the rows correspond to transcripts or genes and the columns to arrays.
+These methods allow one to extract the size of microarray data objects in the same way that one would do for ordinary matrices.
+</p>
+<p>A consequence is that row and column commands <code>nrow(x)</code>, <code>ncol(x)</code> and so on also work.
+</p>
+
+
+<h3>Value</h3>
+
+
+<p>Numeric vector of length 2.
+The first element is the number of rows (genes) and the second is the number of columns (arrays).
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Gordon Smyth, Davis McCarthy</p>
+
+
+<h3>See Also</h3>
+
+
+<p><code><a href="../../base/html/dim.html">dim</a></code> in the base package.
+</p>
+<p><a href="../../limma/html/02classes.html">02.Classes</a> gives an overview of data classes used in LIMMA.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+M &lt;- A &lt;- matrix(11:14,4,2)
+rownames(M) &lt;- rownames(A) &lt;- c("a","b","c","d")
+colnames(M) &lt;- colnames(A) &lt;- c("A1","A2")
+MA &lt;- new("MAList",list(M=M,A=A))
+dim(M)
+ncol(M)
+nrow(M)
+length(M)
+</pre>
+
+<hr><div align="center">[Package <em>edgeR</em> version 2.4.3 <a href="00Index.html">Index</a>]</div>
+</body></html>

@@ -1,0 +1,62 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><title>R: Extract Vector of Offsets from DGEList Object</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body>
+
+<table width="100%" summary="page for getOffset {edgeR}"><tr><td>getOffset {edgeR}</td><td align="right">R Documentation</td></tr></table>
+
+<h2>Extract Vector of Offsets from DGEList Object</h2>
+
+<h3>Description</h3>
+
+<p>Returns the <code>lib.size</code> component of the <code>samples</code> component of  DGEList object multiplied by the <code>norm.factors</code> component</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+getOffset(object) 
+</pre>
+
+
+<h3>Arguments</h3>
+
+ 
+<table summary="R argblock">
+<tr valign="top"><td><code>object</code></td>
+<td>
+<p><code>DGEList</code> object containing (at least) the elements <code>counts</code> (table of raw counts), <code>group</code> (factor indicating group) and <code>samples</code>, which contains <code>lib.size</code> (numeric vector of library sizes) and <code>norm.factors</code> (numeric vector of normalization factors).</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p><code>getOffset</code> returns a numeric vector </p>
+
+
+<h3>Author(s)</h3>
+
+<p>Gordon Smyth, Davis McCarthy</p>
+
+
+<h3>See Also</h3>
+
+
+<p><code><a href="DGEList.html">DGEList</a></code> for more information about the <code>DGEList</code> class.
+<code><a href="asmatrix.html">as.matrix.DGEList</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+# generate raw counts from NB, create list object
+y&lt;-matrix(rnbinom(20,size=1,mu=10),nrow=5)
+d&lt;-DGEList(counts=y,group=rep(1:2,each=2),lib.size=rep(c(1000:1001),2))
+getOffset(d)
+</pre>
+
+<hr><div align="center">[Package <em>edgeR</em> version 2.4.3 <a href="00Index.html">Index</a>]</div>
+</body></html>

@@ -1,0 +1,129 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><title>R: Estimate Empirical Bayes Tagwise Dispersion Values</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body>
+
+<table width="100%" summary="page for estimateTagwiseDisp {edgeR}"><tr><td>estimateTagwiseDisp {edgeR}</td><td align="right">R Documentation</td></tr></table>
+
+<h2>Estimate Empirical Bayes Tagwise Dispersion Values</h2>
+
+<h3>Description</h3>
+
+
+<p>Estimates tagwise dispersion values by an empirical Bayes method based on weighted conditional maximum likelihood.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+estimateTagwiseDisp(object, prior.n=getPriorN(object), trend="movingave", prop.used=0.3, method="grid", grid.length=200, tol=1e-06, verbose=FALSE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+ 
+<table summary="R argblock">
+<tr valign="top"><td><code>object</code></td>
+<td>
+<p>object of class <code>DGEList</code> containing (at least) the elements <code>counts</code> (table of raw counts), <code>group</code> (factor indicating group), <code>lib.size</code> (numeric vector of library sizes) and <code>pseudo.alt</code> (numeric matrix of quantile-adjusted pseudocounts calculated under the alternative hypothesis of a true difference between groups; recommended to use the <code>DGEList</code> object provided as the output of <code>estimateCommonDisp</code></p>
+</td></tr>
+<tr valign="top"><td><code>prior.n</code></td>
+<td>
+<p>numeric scalar, smoothing parameter that indicates the weight to give to the common likelihood compared to the individual tag's likelihood; default <code>getPriorN(object)</code> gives a value for <code>prior.n</code> that is equivalent to giving the common likelihood 20 prior degrees of freedom in the estimation of the tag/genewise dispersion.</p>
+</td></tr>
+<tr valign="top"><td><code>trend</code></td>
+<td>
+<p>method for allowing the prior distribution for the dispersion to be abundance-dependent.
+Possible values are <code>"none"</code>, <code>"movingave"</code> and <code>"tricube"</code>.
+<code>"none"</code> means no trend.
+<code>"movingave"</code> applies a moving average smoother to the local likelihood values.
+<code>"tricube"</code> applies tricube weighting to locally smooth the common likelihood.</p>
+</td></tr>
+<tr valign="top"><td><code>prop.used</code></td>
+<td>
+<p>optional scalar giving the proportion of all tags/genes to be used for the locally weighted estimation of the tagwise dispersion, allowing the dispersion estimates to vary with abundance (expression level). For each tag/gene the estimate of its dispersion is based on the closest <code>prop.used</code> of all of the genes to that gene, where 'closeness' is based on similarity in expression level.</p>
+</td></tr>
+<tr valign="top"><td><code>method</code></td>
+<td>
+<p>method for maximizing the posterior likelihood.
+Possible values are <code>"grid"</code> for grid search or <code>"optimize"</code> to call the function of the same name.
+</p>
+</td></tr>
+<tr valign="top"><td><code>grid.length</code></td>
+<td>
+<p>for <code>method="grid"</code>, the number of points at which the likelihood is evaluated for each tag.  Larger values improve the accuracy of the dispersion estimates.</p>
+</td></tr>
+<tr valign="top"><td><code>tol</code></td>
+<td>
+<p>for <code>method="optimize"</code>, the tolerance for Newton-Rhapson iterations.</p>
+</td></tr>
+<tr valign="top"><td><code>verbose</code></td>
+<td>
+<p>logical, if <code>TRUE</code> then diagnostic ouput is produced during the estimation process.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+
+<p>Maximizes the negative binomial weighted likelihood (a weighted version using the common likelihood given weight according the the smoothing parameter prior.n and the individual tag/gene likelihood) for each tag from the pseudocounts provided (i.e. assuming library sizes are equal), to give an estimate of the dispersion parameter for each tag (i.e. tagwise dispersion estimation).
+</p>
+<p><code>"tricube"</code> local weighting is similar to that used by <code>lowess</code>.
+<code>"movingave"</code> is much faster than <code>"tricube"</code> and gives similar results.
+</p>
+<p><code>"optimize"</code> is very slow if there is a large number of tags/genes to be analysed (i.e., more than 5000).
+</p>
+
+
+<h3>Value</h3>
+
+
+<p>An object of class <code>DGEList</code> with the same components as for <code><a href="estimateCommonDisp.html">estimateCommonDisp</a></code> plus the following:
+</p>
+<table summary="R valueblock">
+<tr valign="top"><td><code>prior.n</code></td>
+<td>
+<p>estimate of the prior weight, i.e. the smoothing parameter that indicates the weight to put on the common likelihood compared to the individual tag's likelihood; prior.n of 10 means that the common likelihood is given 10 times the weight of the individual tag/gene's likelihood in the estimation of the tag/genewise dispersion</p>
+</td></tr>
+<tr valign="top"><td><code>tagwise.dispersion</code></td>
+<td>
+<p>tag- or gene-wise estimates of the dispersion parameter</p>
+</td></tr>
+</table>
+
+
+<h3>Author(s)</h3>
+
+<p>Mark Robinson, Davis McCarthy and Gordon Smyth</p>
+
+
+<h3>References</h3>
+
+
+<p>Robinson MD and Smyth GK (2007). Moderated statistical tests for
+assessing differences in tag abundance. <EM>Bioinformatics</EM> 23, 2881-2887
+</p>
+
+
+<h3>See Also</h3>
+
+
+<p><code><a href="estimateCommonDisp.html">estimateCommonDisp</a></code> estimates a common value for the dispersion parameter for all tags/genes - should generally be run before <code>estimateTagwiseDisp</code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+y&lt;-matrix(rnbinom(1000,mu=10,size=2),ncol=4)
+d&lt;-DGEList(counts=y,group=c(1,1,2,2),lib.size=c(1000:1003))
+d&lt;-estimateCommonDisp(d)
+tgwdisp&lt;-estimateTagwiseDisp(d, prior.n=10)
+</pre>
+
+<hr><div align="center">[Package <em>edgeR</em> version 2.4.3 <a href="00Index.html">Index</a>]</div>
+</body></html>

@@ -1,0 +1,86 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><title>R: Weighted Conditional Log-Likelihood in Terms of Delta</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body>
+
+<table width="100%" summary="page for weightedCondLogLikDerDelta {edgeR}"><tr><td>weightedCondLogLikDerDelta {edgeR}</td><td align="right">R Documentation</td></tr></table>
+
+<h2>Weighted Conditional Log-Likelihood in Terms of Delta</h2>
+
+<h3>Description</h3>
+
+<p>Weighted conditional log-likelihood parameterized in terms of delta (<code>phi / (phi+1)</code>) for a given tag/gene - maximized to find the smoothed (moderated) estimate of the dispersion parameter</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+weightedCondLogLikDerDelta(y, delta, tag, prior.n=10, ntags=nrow(y[[1]]), der=0, doSum=FALSE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+ 
+<table summary="R argblock">
+<tr valign="top"><td><code>y</code></td>
+<td>
+<p>list with elements comprising the matrices of count data (or pseudocounts) for the different groups</p>
+</td></tr>
+<tr valign="top"><td><code>delta</code></td>
+<td>
+<p>delta (<code>phi / (phi+1)</code>)parameter of negative binomial</p>
+</td></tr>
+<tr valign="top"><td><code>tag</code></td>
+<td>
+<p>tag/gene at which the weighted conditional log-likelihood is evaluated</p>
+</td></tr>
+<tr valign="top"><td><code>prior.n</code></td>
+<td>
+<p>smoothing paramter that indicates the weight to put on the common likelihood compared to the individual tag's likelihood; default <code>10</code> means that the common likelihood is given 10 times the weight of the individual tag/gene's likelihood in the estimation of the tag/genewise dispersion</p>
+</td></tr>
+<tr valign="top"><td><code>ntags</code></td>
+<td>
+<p>numeric scalar number of tags/genes in the dataset to be analysed</p>
+</td></tr>
+<tr valign="top"><td><code>der</code></td>
+<td>
+<p>derivative, either 0 (the function), 1 (first derivative) or 2 (second derivative)</p>
+</td></tr>
+<tr valign="top"><td><code>doSum</code></td>
+<td>
+<p>logical, whether to sum over samples or not (default <code>FALSE</code></p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+
+<p>This function computes the weighted conditional log-likelihood for a given tag, parameterized in terms of delta. The value of delta that maximizes the weighted conditional log-likelihood is converted back to the <code>phi</code> scale, and this value is the estimate of the smoothed (moderated) dispersion parameter for that particular tag. The delta scale for convenience (delta is bounded between 0 and 1). 
+</p>
+
+
+<h3>Value</h3>
+
+<p> numeric scalar of function/derivative evaluated for the  given tag/gene and delta</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Mark Robinson, Davis McCarthy</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+counts&lt;-matrix(rnbinom(20,size=1,mu=10),nrow=5)
+d&lt;-DGEList(counts=counts,group=rep(1:2,each=2),lib.size=rep(c(1000:1001),2))
+y&lt;-splitIntoGroups(d)
+ll1&lt;-weightedCondLogLikDerDelta(y,delta=0.5,tag=1,prior.n=10,der=0)
+ll2&lt;-weightedCondLogLikDerDelta(y,delta=0.5,tag=1,prior.n=10,der=1)
+</pre>
+
+<hr><div align="center">[Package <em>edgeR</em> version 2.4.3 <a href="00Index.html">Index</a>]</div>
+</body></html>

@@ -1,0 +1,119 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><title>R: Good-Turing Frequency Estimation</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body>
+
+<table width="100%" summary="page for goodTuring {edgeR}"><tr><td>goodTuring {edgeR}</td><td align="right">R Documentation</td></tr></table>
+
+<h2>Good-Turing Frequency Estimation</h2>
+
+<h3>Description</h3>
+
+
+<p>Non-parametric empirical Bayes estimates of the frequencies of observed (and unobserved) species.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>goodTuring(x, plot=FALSE)
+goodTuringProportions(counts)</pre>
+
+
+<h3>Arguments</h3>
+
+ 
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>numeric vector of non-negative integers, representing the observed frequency of each species.</p>
+</td></tr>
+<tr valign="top"><td><code>plot</code></td>
+<td>
+<p>logical, whether to plot log-probability (i.e., log frequencies of frequencies)versus log-frequency.</p>
+</td></tr>
+<tr valign="top"><td><code>counts</code></td>
+<td>
+<p>matrix of counts</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+
+<p>Observed counts are assumed to be Poisson.
+Using an non-parametric empirical Bayes strategy, the algorithm evaluates the posterior expectation of each species mean given its observed count.
+The posterior means are then converted to proportions.
+In the empirical Bayes step, the counts are smoothed by assuming a log-linear relationship between frequencies and frequencies of frequencies.
+The basics of the algorithm are from Good (1953).
+Gale and Sampson (1995) proposed a simplied algorithm with a rule for switching between the observed and smoothed frequencies, and it is Gale and Sampson's simplified algorithm that is implemented here.
+The number of zero values in <code>x</code> are not used in the algorithm, but is returned by this function.
+</p>
+<p>Sampson gives a C code version on his webpage at
+<a href="http://www.grsampson.net/RGoodTur.html">http://www.grsampson.net/RGoodTur.html</a>
+which gives identical results to this function.
+</p>
+<p><code>goodTuringProportions</code> runs <code>goodTuring</code> on each column of data, then
+uses the results to predict the proportion of each tag in each library.
+</p>
+
+
+<h3>Value</h3>
+
+
+<p><code>goodTuring</code> returns a list with components
+</p>
+<table summary="R valueblock">
+<tr valign="top"><td><code>count</code></td>
+<td>
+<p>observed frequencies, i.e., the unique positive values of <code>x</code></p>
+</td></tr>
+<tr valign="top"><td><code>proportion</code></td>
+<td>
+<p>estimated proportion of species given the count</p>
+</td></tr>
+<tr valign="top"><td><code>P0</code></td>
+<td>
+<p>estimated combined proportion of all undetected species</p>
+</td></tr>
+<tr valign="top"><td><code>n0</code></td>
+<td>
+<p>number of zeros found in <code>x</code></p>
+</td></tr>
+</table>
+<p><code>goodTuringProportions</code> returns a matrix of proportions of the same size
+as <code>counts</code>.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Gordon Smyth</p>
+
+
+<h3>References</h3>
+
+
+<p>Gale, WA, and Sampson, G (1995).
+Good-Turing frequency estimation without tears.
+<EM>Journal of Quantitative Linguistics</EM> 2, 217-237.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+#  True means of observed species
+lambda &lt;- rnbinom(10000,mu=2,size=1/10)
+lambda &lt;- lambda[lambda&gt;1]
+
+#  Oberved frequencies
+Ntrue &lt;- length(lambda)
+x &lt;- rpois(Ntrue, lambda=lambda)
+freq &lt;- goodTuring(x, plot=TRUE)
+</pre>
+
+<hr><div align="center">[Package <em>edgeR</em> version 2.4.3 <a href="00Index.html">Index</a>]</div>
+</body></html>

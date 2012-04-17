@@ -1,0 +1,16 @@
+Package: edgeR
+Version: 2.4.3
+Date: 2012/01/10
+Title: Empirical analysis of digital gene expression data in R
+Author: Mark Robinson <mrobinson@wehi.edu.au>, Davis McCarthy <dmccarthy@wehi.edu.au>, Yunshun Chen <yuchen@wehi.edu.au>, Gordon Smyth <smyth@wehi.edu.au>
+Maintainer: Mark Robinson <mrobinson@wehi.edu.au>, Davis McCarthy
+        <dmccarthy@wehi.edu.au>, Yunshun Chen <yuchen@wehi.edu.au>,
+        Gordon Smyth <smyth@wehi.edu.au>
+Depends: R (>= 2.3.0), methods, limma
+Suggests: MASS, statmod, splines
+biocViews: Bioinformatics, DifferentialExpression, SAGE,
+        HighThroughputSequencing, RNAseq
+Description: Differential expression analysis of RNA-seq and digital gene expression profiles with biological replication.  Uses empirical Bayes estimation and exact tests based on the negative binomial distribution.  Also useful for differential signal analysis with other types of genome-scale count data.
+License: LGPL (>= 2)
+Packaged: 2012-01-11 05:31:38 UTC; biocbuild
+Built: R 2.14.0; ; 2012-02-27 21:59:44 UTC; unix

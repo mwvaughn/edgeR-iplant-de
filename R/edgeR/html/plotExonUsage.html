@@ -1,0 +1,93 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><title>R: Create a Plot of Exon Usage from Exon-Level Count Data</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body>
+
+<table width="100%" summary="page for plotExonUsage {edgeR}"><tr><td>plotExonUsage {edgeR}</td><td align="right">R Documentation</td></tr></table>
+
+<h2>Create a Plot of Exon Usage from Exon-Level Count Data</h2>
+
+<h3>Description</h3>
+
+<p>Create a plot of exon usage for a given gene by plotting the (un)transformed counts for each exon, coloured by experimental group.</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+plotExonUsage(y, geneID, group=NULL, transform="none", counts.per.million=TRUE, legend.coords=NULL, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+ 
+<table summary="R argblock">
+<tr valign="top"><td><code>y</code></td>
+<td>
+<p>either a matrix of exon-level counts, a list containing a matrix of counts for each exon or a <code>DGEList</code> object with (at least) elements <code>counts</code> (table of counts summarized at the exon level) and <code>samples</code> (data frame containing information about experimental group, library size and normalization factor for the library size). Each row of <code>y</code> should represent one exon.</p>
+</td></tr>
+<tr valign="top"><td><code>geneID</code></td>
+<td>
+<p>character string giving the name of the gene for which exon usage is to be plotted.</p>
+</td></tr> 
+<tr valign="top"><td><code>group</code></td>
+<td>
+<p>factor supplying the experimental group/condition to which each sample (column of <code>y</code>) belongs. If <code>NULL</code> (default) the function will try to extract if from <code>y</code>, which only works if <code>y</code> is a <code>DGEList</code> object.</p>
+</td></tr>
+<tr valign="top"><td><code>transform</code></td>
+<td>
+<p>character, supplying the method of transformation to be applied to the exon counts, if any. Options are <code>"none"</code> (original counts are preserved), <code>"sqrt"</code> (square-root transformation) and <code>"log2"</code> (log2 transformation). Default is <code>"none"</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>counts.per.million</code></td>
+<td>
+<p>logical, if <code>TRUE</code> then counts per million (as determined from total library sizes) will be plotted for each exon, if <code>FALSE</code> the raw read counts will be plotted. Using counts per million effectively normalizes for different read depth among the different samples, which can make the exon usage plots easier to interpret.</p>
+</td></tr>
+<tr valign="top"><td><code>legend.coords</code></td>
+<td>
+<p>optional vector of length 2 giving the x- and y-coordinates of the legend on the plot. If <code>NULL</code> (default), the legend will be automatically placed near the top right corner of the plot.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>optional further arguments to be passed on to <code>plot</code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+
+<p>This function produces a simple plot for comparing exon usage between different experimental conditions for a given gene.
+</p>
+
+
+<h3>Value</h3>
+
+<p><code>plotExonUsage</code> (invisibly) returns the transformed matrix of counts for the gene being plotted and produces a plot to the current device.</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Davis McCarthy, Gordon Smyth</p>
+
+
+<h3>See Also</h3>
+
+
+<p><code><a href="spliceVariants.html">spliceVariants</a></code> for methods to detect genes with evidence for alternative exon usage.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+# generate exon counts from NB, create list object
+y&lt;-matrix(rnbinom(40,size=1,mu=10),nrow=10)
+rownames(y) &lt;- rep(c("gene.1","gene.2"), each=5)
+d&lt;-DGEList(counts=y,group=rep(1:2,each=2))
+plotExonUsage(d, "gene.1")
+</pre>
+
+<hr><div align="center">[Package <em>edgeR</em> version 2.4.3 <a href="00Index.html">Index</a>]</div>
+</body></html>

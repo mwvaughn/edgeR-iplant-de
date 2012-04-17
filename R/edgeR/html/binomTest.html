@@ -1,0 +1,122 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><title>R: Exact Binomial Tests for Comparing Two Digital Libraries</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body>
+
+<table width="100%" summary="page for binomTest {edgeR}"><tr><td>binomTest {edgeR}</td><td align="right">R Documentation</td></tr></table>
+
+<h2>Exact Binomial Tests for Comparing Two Digital Libraries</h2>
+
+<h3>Description</h3>
+
+
+<p>Computes p-values for differential abundance for each tag between two digital libraries,
+conditioning on the total count for each tag.
+The counts in each group as a proportion of the whole are assumed to follow a binomial distribution.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+binomTest(y1, y2, n1=sum(y1), n2=sum(y2), p=n1/(n1+n2))
+</pre>
+
+
+<h3>Arguments</h3>
+
+
+<table summary="R argblock">
+<tr valign="top"><td><code>y1</code></td>
+<td>
+<p>integer vector giving counts in first library.
+Non-integer values are rounded to the nearest integer.</p>
+</td></tr>
+<tr valign="top"><td><code>y2</code></td>
+<td>
+<p>integer vector giving counts in second library.
+Of same length as <code>x</code>.
+Non-integer values are rounded to the nearest integer.</p>
+</td></tr>
+<tr valign="top"><td><code>n1</code></td>
+<td>
+<p>total number of tags in first library.
+Non-integer values are rounded to the nearest integer. Not required if <code>p</code> is supplied.</p>
+</td></tr>
+<tr valign="top"><td><code>n2</code></td>
+<td>
+<p>total number of tags in second library.
+Non-integer values are rounded to the nearest integer. Not required if <code>p</code> is supplied.</p>
+</td></tr>
+<tr valign="top"><td><code>p</code></td>
+<td>
+<p>expected proportion of y1 to the total under the null hypothesis.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+
+<p>This function can be used to compare two libraries from SAGE, RNA-Seq, ChIP-Seq or other sequencing technologies with respect to technical variation.
+</p>
+<p>An exact two-sided binomial test is computed for each tag.
+This test is closely related to Fisher's exact test for 2x2 contingency tables but, unlike Fisher's test, it conditions on the total number of counts for each tag.
+The null hypothesis is that the expected counts are in the same proportions as the library sizes, i.e., that the binomial probability for the first library is <code>n1/(n1+n2)</code>.
+</p>
+<p>The two-sided rejection region is chosen analogously to Fisher's test.
+Specifically, the rejection region consists of those values with smallest probabilities
+under the null hypothesis.
+</p>
+<p>When the counts are reasonably large, the binomial test, Fisher's test and Pearson's chisquare all give the same results.
+When the counts are smaller, the binomial test is usually to be preferred in this context.
+</p>
+<p>This function replaces the earlier <code>sage.test</code> functions in the statmod and sagenhaft packages.
+It produces the same results as <code><a href="../../stats/html/binom.test.html">binom.test</a></code> in the stats packge, but is much faster.
+</p>
+
+
+<h3>Value</h3>
+
+
+<p>Numeric vector of p-values.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Gordon Smyth</p>
+
+
+<h3>References</h3>
+
+
+<p><a href="http://en.wikipedia.org/wiki/Binomial_test">http://en.wikipedia.org/wiki/Binomial_test</a>
+</p>
+<p><a href="http://en.wikipedia.org/wiki/Fisher's_exact_test">http://en.wikipedia.org/wiki/Fisher's_exact_test</a>
+</p>
+<p><a href="http://en.wikipedia.org/wiki/Serial_analysis_of_gene_expression">http://en.wikipedia.org/wiki/Serial_analysis_of_gene_expression</a>
+</p>
+<p>http://en.wikipedia.org/wiki/RNA-Seq
+</p>
+
+
+<h3>See Also</h3>
+
+
+<p><code><a href="../../statmod/html/sage.test.html">sage.test</a></code> (statmod package), <code><a href="../../stats/html/binom.test.html">binom.test</a></code> (stats package)
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+binomTest(c(0,5,10),c(0,30,50),n1=10000,n2=15000)
+#  Univariate equivalents:
+binom.test(5,5+30,p=10000/(10000+15000))$p.value
+binom.test(10,10+50,p=10000/(10000+15000))$p.value
+</pre>
+
+<hr><div align="center">[Package <em>edgeR</em> version 2.4.3 <a href="00Index.html">Index</a>]</div>
+</body></html>

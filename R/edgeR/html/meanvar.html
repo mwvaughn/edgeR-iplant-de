@@ -1,0 +1,171 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><title>R: Explore the mean-variance relationship for DGE data</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body>
+
+<table width="100%" summary="page for meanvar {edgeR}"><tr><td>meanvar {edgeR}</td><td align="right">R Documentation</td></tr></table>
+
+<h2>Explore the mean-variance relationship for DGE data</h2>
+
+<h3>Description</h3>
+
+<p>Appropriate modelling of the mean-variance relationship in DGE data is important for making inferences about differential expression. Here are functions to compute tag/gene means and variances, as well at looking at these quantities when data is binned based on overall expression level.</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+plotMeanVar(object, meanvar=NULL, show.raw.vars=FALSE, show.tagwise.vars=FALSE, show.binned.common.disp.vars=FALSE, show.ave.raw.vars=TRUE, scalar=NULL, NBline=FALSE, nbins=100, log.axes="xy", xlab=NULL, ylab=NULL,  ...) 
+binMeanVar(x, conc=NULL, group, nbins=100, common.dispersion=FALSE, object=NULL)
+</pre>
+
+
+<h3>Arguments</h3>
+
+ 
+<table summary="R argblock">
+<tr valign="top"><td><code>object</code></td>
+<td>
+<p><code>DGEList</code> object containing the raw data and dispersion value. According the method desired for computing the dispersion, either <code>CRDisp</code> or <code>estimateCommonDisp</code> and (possibly) <code>estimateTagwiseDisp</code> should be run on the <code>DGEList</code> object before using <code>plotMeanVar</code>. The argument <code>object</code> must be supplied in the function <code>binMeanVar</code> if common dispersion values are to be computed for each bin.</p>
+</td></tr>
+<tr valign="top"><td><code>meanvar</code></td>
+<td>
+<p>list (optional) containing the output from <code>binMeanVar</code> or the returned value of <code>plotMeanVar</code>. Providing this object as an argument will save time in computing the tag/gene means and variances when producing a mean-variance plot. </p>
+</td></tr>
+<tr valign="top"><td><code>show.raw.vars</code></td>
+<td>
+<p>logical, whether or not to display the raw (pooled) gene/tag variances on the mean-variance plot. Default is <code>FALSE</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>show.tagwise.vars</code></td>
+<td>
+<p>logical, whether or not to display the estimated genewise/tagwise variances on the mean-variance plot. Default is <code>FALSE</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>show.binned.common.disp.vars</code></td>
+<td>
+<p>logical, whether or not to compute the common dispersion for each bin of tags and show the variances computed from those binned common dispersions and the mean expression level of the respective bin of tags. Default is <code>FALSE</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>show.ave.raw.vars</code></td>
+<td>
+<p>logical, whether or not to show the average of the raw variances for each bin of tags plotted against the average expression level of the tags in the bin. Averages are taken on the square root scale as regular arithmetic means are likely to be upwardly biased for count data, whereas averaging on the square scale gives a better summary of the mean-variance relationship in the data. The default is <code>TRUE</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>scalar</code></td>
+<td>
+<p>vector (optional) of scaling values to divide counts by. Would expect to have this the same length as the number of columns in the count matrix (i.e. the number of libraries).</p>
+</td></tr>
+<tr valign="top"><td><code>NBline</code></td>
+<td>
+<p>logical, whether or not to add a line on the graph showing the mean-variance relationship for a NB model with common dispersion.</p>
+</td></tr>
+<tr valign="top"><td><code>nbins</code></td>
+<td>
+<p>scalar giving the number of bins (formed by using the quantiles of the genewise mean expression levels) for  which to compute average means and variances for exploring the mean-variance relationship. Default is <code>100</code> bins</p>
+</td></tr>
+<tr valign="top"><td><code>log.axes</code></td>
+<td>
+<p>character vector indicating if any of the axes should use a log scale. Default is <code>"xy"</code>, which makes both y and x axes on the log scale. Other valid options are <code>"x"</code> (log scale on x-axis only), <code>"y"</code> (log scale on y-axis only) and <code>""</code> (linear scale on x- and y-axis).</p>
+</td></tr>
+<tr valign="top"><td><code>xlab</code></td>
+<td>
+<p>character string giving the label for the x-axis. Standard graphical parameter. If left as the default <code>NULL</code>, then the x-axis label will be set to &quot;logConc&quot;.</p>
+</td></tr>
+<tr valign="top"><td><code>ylab</code></td>
+<td>
+<p>character string giving the label for the y-axis. Standard graphical parameter. If left as the default <code>NULL</code>, then the x-axis label will be set to &quot;logConc&quot;.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>further arguments passed on to <code>plot</code></p>
+</td></tr>
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>matrix of count data, with rows representing tags/genes and columns representing samples</p>
+</td></tr>
+<tr valign="top"><td><code>conc</code></td>
+<td>
+<p>vector (optional) of values for the concentration (i.e. abundance) of each tag</p>
+</td></tr>
+<tr valign="top"><td><code>group</code></td>
+<td>
+<p>factor giving the experimental group or condition to which each sample (i.e. column of <code>x</code> or element of y) belongs</p>
+</td></tr>
+<tr valign="top"><td><code>common.dispersion</code></td>
+<td>
+<p>logical, whether or not to compute the common dispersion for each bin of tags.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+
+<p>This function is useful for exploring the mean-variance relationship in the data. Raw variances are, for each gene, the pooled variance of the counts from each sample, divided by a scaling factor (by default the effective library size). The function will plot the average raw variance for tags split into <code>nbins</code> bins by overall expression level. The averages are taken on the square-root scale as for count data the arithmetic mean is upwardly biased. Taking averages on the square-root scale provides a useful summary of how the variance of the gene counts change with respect to expression level (abundance). A line showing the Poisson mean-variance relationship (mean equals variance) is always shown to illustrate how the genewise variances may differ from a Poisson mean-variance relationship. Optionally, the raw variances and estimated tagwise variances can also be plotted. Estimated tagwise variances can be calculated using either qCML estimates of the tagwise dispersions (<code>estimateTagwiseDisp</code>) or Cox-Reid conditional inference estimates (<code>CRDisp</code>). A log-log scale is used for the plot.
+</p>
+
+
+<h3>Value</h3>
+
+ <p><code>plotMeanVar</code> produces a mean-variance plot for the DGE data using the options described above. <code>plotMeanVar</code> and <code>binMeanVar</code> both return a list with the following components:
+</p>
+<table summary="R valueblock">
+<tr valign="top"><td><code>avemeans</code></td>
+<td>
+<p>vector of the average expression level within each bin of genes, with the average taken on the square-root scale</p>
+</td></tr>
+<tr valign="top"><td><code>avevars</code></td>
+<td>
+<p>vector of the average raw pooled gene-wise variance within each bin of genes, with the average taken on the square-root scale</p>
+</td></tr>
+<tr valign="top"><td><code>bin.means</code></td>
+<td>
+<p>list containing the average (mean) expression level for genes divided into bins based on amount of expression</p>
+</td></tr>
+<tr valign="top"><td><code>bin.vars</code></td>
+<td>
+<p>list containing the pooled variance for genes divided into bins based on amount of expression</p>
+</td></tr>
+<tr valign="top"><td><code>means</code></td>
+<td>
+<p>vector giving the mean expression level for each gene</p>
+</td></tr>
+<tr valign="top"><td><code>vars</code></td>
+<td>
+<p>vector giving the pooled variance for each gene</p>
+</td></tr>
+<tr valign="top"><td><code>bins</code></td>
+<td>
+<p>list giving the indices of the tags in each bin, ordered from lowest expression bin to highest</p>
+</td></tr>
+</table>
+
+
+<h3>Author(s)</h3>
+
+<p>Davis McCarthy</p>
+
+
+<h3>See Also</h3>
+
+
+<p><code><a href="plotMDS.dge.html">plotMDS.DGEList</a></code>, <code><a href="plotSmear.html">plotSmear</a></code> and
+<code><a href="maPlot.html">maPlot</a></code> provide more ways of visualizing DGE data.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+y &lt;- matrix(rnbinom(1000,mu=10,size=2),ncol=4)
+d &lt;- DGEList(counts=y,group=c(1,1,2,2),lib.size=c(1000:1003))
+plotMeanVar(d) # Produce a straight-forward mean-variance plot
+meanvar &lt;- plotMeanVar(d, show.raw.vars=TRUE) # Produce a mean-variance plot with the raw variances shown and save the means and variances for later use
+
+## If we want to show estimated tagwise variances on the plot, we must first estimate them!
+d &lt;- estimateCommonDisp(d) # Obtain an estimate of the dispersion parameter
+d &lt;- estimateTagwiseDisp(d)  # Obtain tagwise dispersion estimates
+plotMeanVar(d, meanvar=meanvar, show.tagwise.vars=TRUE, NBline=TRUE) # Use previously saved object to speed up plotting;
+## We could also estimate common/tagwise dispersions using the Cox-Reid methods with an appropriate design matrix
+</pre>
+
+<hr><div align="center">[Package <em>edgeR</em> version 2.4.3 <a href="00Index.html">Index</a>]</div>
+</body></html>

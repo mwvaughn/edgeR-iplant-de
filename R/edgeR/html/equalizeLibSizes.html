@@ -1,0 +1,88 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><title>R: Quantile Adjustment to Equalize Library Sizes for a Fixed...</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body>
+
+<table width="100%" summary="page for equalizeLibSizes {edgeR}"><tr><td>equalizeLibSizes {edgeR}</td><td align="right">R Documentation</td></tr></table>
+
+<h2>Quantile Adjustment to Equalize Library Sizes for a Fixed Value of the Dispersion Parameter</h2>
+
+<h3>Description</h3>
+
+<p>A function that uses a NB quantile-to-quantile method to adjust the libraries of counts so that library sizes are equal for a fixed value of the dispersion parameter.</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+equalizeLibSizes(object, disp=0, N=exp(mean(log(object$samples$lib.size*object$samples$norm.factors))),null.hypothesis=FALSE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+ 
+<table summary="R argblock">
+<tr valign="top"><td><code>object</code></td>
+<td>
+<p><code>DGEList</code> object containing the raw counts with elements <code>counts</code> (table of counts), <code>group</code> (vector indicating group) and <code>lib.size</code> (vector of library sizes)</p>
+</td></tr>
+<tr valign="top"><td><code>disp</code></td>
+<td>
+<p>numeric scalar or vector of <code>dispersion</code> parameters; if a scalar, then a common dispersion parameter is used for all tags</p>
+</td></tr>
+<tr valign="top"><td><code>N</code></td>
+<td>
+<p>numeric scalar, the library size to normalize to; default is the geometric mean of the original library sizes</p>
+</td></tr>
+<tr valign="top"><td><code>null.hypothesis</code></td>
+<td>
+<p>logical, whether to calculate the <code>input.mean</code> and <code>output.mean</code> under the null hypothesis; default is <code>FALSE</code></p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+
+<p>The function <code>equalizeLibSizes</code> provides the necessary framework and calculations to call <code>q2qnbinom</code>, for given value(s) of the dispersion parameter. The function <code>q2qnbinom</code> actually generates the pseudocounts, the counts that have been adjusted for normalized library sizes. These pseudocounts are required to estimate the dispersion parameter, as the methods used by <code><a href="estimateCommonDisp.html">estimateCommonDisp</a></code> and <code><a href="estimateTagwiseDisp.html">estimateTagwiseDisp</a></code> rely on the assumption of equal library sizes. This function calls <code>estimatePs</code> to estimate the expression proportion for each tag, which is needed to calculate the <code>input.mean</code> and <code>output.mean</code> for each tag, which are passed to <code>q2qnbinom</code> along with the unadjusted counts and the fixed value(s) for the dispersion parameter. 
+</p>
+
+
+<h3>Value</h3>
+
+<p>A list with elements 
+</p>
+<table summary="R valueblock">
+<tr valign="top"><td><code>pseudo</code></td>
+<td>
+<p>numeric matrix of pseudocounts, i.e. adjusted counts for equalized libraries</p>
+</td></tr>
+<tr valign="top"><td><code>conc</code></td>
+<td>
+<p>list with elements <code>conc.common</code> (vector giving overall proportion/concentration for each tag), and <code>conc.group</code> (matrix with columns giving estimates of tag/gene concentrations (proportion of total RNA for that group that that particular tag/gene contributes) for different groups); output from <code>estimatePs</code></p>
+</td></tr>
+<tr valign="top"><td><code>N</code></td>
+<td>
+<p>normalized library size</p>
+</td></tr>
+</table>
+
+
+<h3>Author(s)</h3>
+
+<p>Mark Robinson, Davis McCarthy</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+y&lt;-matrix(rnbinom(10000,size=2,mu=10),ncol=4)
+d&lt;-DGEList(counts=y,group=rep(1:2,each=2),lib.size=rep(c(1000,1010),2))
+ps&lt;-estimatePs(d,r=2)
+q2q.out&lt;-equalizeLibSizes(d,disp=0.5,null.hypothesis=FALSE)
+</pre>
+
+<hr><div align="center">[Package <em>edgeR</em> version 2.4.3 <a href="00Index.html">Index</a>]</div>
+</body></html>

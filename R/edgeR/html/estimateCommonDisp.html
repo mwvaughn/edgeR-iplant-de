@@ -1,0 +1,117 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><title>R: Estimates the Negative Binomial Common Dispersion by...</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body>
+
+<table width="100%" summary="page for estimateCommonDisp {edgeR}"><tr><td>estimateCommonDisp {edgeR}</td><td align="right">R Documentation</td></tr></table>
+
+<h2>Estimates the Negative Binomial Common Dispersion by Maximizing the Negative Binomial Conditional Common Likelihood</h2>
+
+<h3>Description</h3>
+
+<p>Maximizes the negative binomial conditional common likelihood to give the estimate of the common dispersion across all tags for the unadjusted counts provided. </p>
+
+
+<h3>Usage</h3>
+
+<pre>
+estimateCommonDisp(object, tol=1e-06, rowsum.filter=5)
+</pre>
+
+
+<h3>Arguments</h3>
+
+ 
+<table summary="R argblock">
+<tr valign="top"><td><code>object</code></td>
+<td>
+<p><code>DGEList</code> object with (at least) elements <code>counts</code> (table of unadjusted counts), and <code>samples</code> (vector indicating group) and <code>lib.size</code> (vector of library sizes)</p>
+</td></tr>
+<tr valign="top"><td><code>tol</code></td>
+<td>
+<p>numeric scalar providing the tolerance to be passed to <code>optimize</code>; default value is <code>1e-06</code></p>
+</td></tr>
+<tr valign="top"><td><code>rowsum.filter</code></td>
+<td>
+<p>numeric scalar giving a value for the filtering out of low abundance tags in the estimation of the common dispersion. Only tags with total sum of counts above this value are used in the estimation of the common dispersion. Low abundance tags can adversely affect the estimation of the common dispersion, so this argument allows the user to select an appropriate filter threshold for the tag abundance.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+
+<p>The method of conditional maximum likelihood assumes that library sizes are equal, which is not true in general, so pseudocounts (counts adjusted so that the library sizes are equal) need to be calculated. The function <code>equalizeLibSizes</code> is called to adjust the counts using a quantile-to-quantile method, but this requires a fixed value for the common dispersion parameter. To obtain a good estimate for the common dispersion, pseudocounts are calculated under the Poisson model (dispersion is zero) and these pseudocounts are used to give an estimate of the common dispersion. This estimate of the common dispersion is then used to recalculate the pseudocounts, which are used to provide a final estimate of the common dispersion.
+</p>
+
+
+<h3>Value</h3>
+
+ <p><code>estimateCommonDisp</code> produces an object of class <code>DGEList</code> with the following components.
+</p>
+<table summary="R valueblock">
+<tr valign="top"><td><code>common.dispersion</code></td>
+<td>
+<p>estimate of the common dispersion; the value for <code>phi</code>, the dispersion parameter in the NB model, that maximizes the negative binomial common likelihood on the <code>phi</code> scale</p>
+</td></tr>
+<tr valign="top"><td><code>counts</code></td>
+<td>
+<p>table of unadjusted counts</p>
+</td></tr>
+<tr valign="top"><td><code>group</code></td>
+<td>
+<p>vector indicating the group to which each library belongs</p>
+</td></tr>
+<tr valign="top"><td><code>lib.size</code></td>
+<td>
+<p>vector containing the unadjusted size of each library</p>
+</td></tr>
+<tr valign="top"><td><code>pseudo.alt</code></td>
+<td>
+<p>table of adjusted counts; quantile-to-quantile method (see <code>q2qnbinom</code>) used to adjust the raw counts so that library sizes are equal; adjustment here done under the alternative hypothesis that there is a true difference between groups</p>
+</td></tr>
+<tr valign="top"><td><code>conc</code></td>
+<td>
+<p>list containing the estimates of the concentration of each tag in the underlying sample; <code>conc$p.common</code> gives estimates under the null hypothesis of no difference between groups; <code>conc$p.group</code> gives the estimate of the concentration for each tag within each group; concentration is a measure of abundance and thus expression level for the tags</p>
+</td></tr>
+<tr valign="top"><td><code>common.lib.size</code></td>
+<td>
+<p>the common library size to which the count libraries have been adjusted</p>
+</td></tr>
+</table>
+
+
+<h3>Author(s)</h3>
+
+<p>Mark Robinson, Davis McCarthy</p>
+
+
+<h3>References</h3>
+
+
+<p>Robinson MD and Smyth GK (2008). Small-sample estimation of negative
+binomial dispersion, with applications to SAGE data. <EM>Biostatistics</EM>,
+9, 321-332
+</p>
+
+
+<h3>See Also</h3>
+
+
+<p><code><a href="estimateTagwiseDisp.html">estimateTagwiseDisp</a></code> can be used to estimate a value for the dispersion parameter for each tag/transcript. The estimates are stabilized by squeezing the estimates towards the common value calculated by <code>estimateCommonDisp</code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+# True dispersion is 1/5=0.2
+y &lt;- matrix(rnbinom(1000,mu=10,size=5),ncol=4)
+d &lt;- DGEList(counts=y,group=c(1,1,2,2),lib.size=c(1000:1003))
+cmdisp &lt;- estimateCommonDisp(d)
+cmdisp$common.dispersion
+</pre>
+
+<hr><div align="center">[Package <em>edgeR</em> version 2.4.3 <a href="00Index.html">Index</a>]</div>
+</body></html>

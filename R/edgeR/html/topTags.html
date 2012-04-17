@@ -1,0 +1,112 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><title>R: Table of the Top Differentially Expressed Tags</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body>
+
+<table width="100%" summary="page for topTags {edgeR}"><tr><td>topTags {edgeR}</td><td align="right">R Documentation</td></tr></table>
+
+<h2>Table of the Top Differentially Expressed Tags</h2>
+
+<h3>Description</h3>
+
+<p>Extracts the top DE tags in a data frame for a given pair of groups, ranked by p-value or absolute log-fold change.</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+topTags(object, n=10, adjust.method="BH", sort.by="p.value")
+</pre>
+
+
+<h3>Arguments</h3>
+
+ 
+<table summary="R argblock">
+<tr valign="top"><td><code>object</code></td>
+<td>
+<p>a <code>DGEExact</code> object (output from <code>exactTest</code>) or a <code>DGELRT</code> object (output from <code>glmLRT</code>), containing the (at least) the elements <code>table</code>: a data frame containing the log-concentration (i.e. expression level), the log-fold change in expression between the two groups/conditions and the p-value for differential expression, for each tag. If it is a <code>DGEExact</code> object, then <code>topTags</code> will also use the <code>comparison</code> element, which is a vector giving the two experimental groups/conditions being compared. The object may contain other elements that are not used by <code>topTags</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>n</code></td>
+<td>
+<p>scalar, number of tags to display/return</p>
+</td></tr>
+<tr valign="top"><td><code>adjust.method</code></td>
+<td>
+<p>character string stating the method used to adjust p-values for multiple testing, passed on to <code>p.adjust</code></p>
+</td></tr>
+<tr valign="top"><td><code>sort.by</code></td>
+<td>
+<p>character string, indicating whether tags should be sorted by p-value (<code>"p.value"</code>) or absolute log-fold change (<code>"logFC"</code>); default is to sort by p-value.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>an object of class <code>TopTags</code> containing the following elements for the top <code>n</code> most differentially expressed tags as determined by <code>sort.by</code>.
+</p>
+<table summary="R valueblock">
+<tr valign="top"><td><code>table</code></td>
+<td>
+<p>a data frame containing the elements <code>logConc</code>, the log-average concentration/abundance for each tag in the two groups being compared, <code>logFC</code>, the log-abundance ratio, i.e. fold change, for each tag in the two groups being compared, <code>p.value</code>, exact p-value for differential expression using the NB model, <code>adj.p.val</code>, the p-value adjusted for multiple testing as found using <code>p.adjust</code> using the method specified</p>
+</td></tr>
+<tr valign="top"><td><code>comparison</code></td>
+<td>
+<p>a vector giving the names of the two groups being compared</p>
+</td></tr>
+</table>
+<p>There is a show method for this class.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Mark Robinson, Davis McCarthy, Gordon Smyth</p>
+
+
+<h3>References</h3>
+
+
+<p>Robinson MD, Smyth GK (2008). Small-sample estimation of negative binomial dispersion, with applications to SAGE data. <EM>Biostatistics</EM> 9, 321-332.
+</p>
+<p>Robinson MD, Smyth GK (2007). Moderated statistical tests for assessing differences in tag abundance. <EM>Bioinformatics</EM> 23, 2881-2887.
+</p>
+
+
+<h3>See Also</h3>
+
+
+<p><code><a href="exactTest.html">exactTest</a></code>, <code><a href="glmfit.html">glmLRT</a></code>, <code><a href="../../stats/html/p.adjust.html">p.adjust</a></code>.
+</p>
+<p>Analogous to <code><a href="../../limma/html/toptable.html">topTable</a></code> in the limma package.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+# generate raw counts from NB, create list object
+y &lt;- matrix(rnbinom(80,size=1,mu=10),nrow=20)
+d &lt;- DGEList(counts=y,group=rep(1:2,each=2),lib.size=rep(c(1000:1001),2))
+rownames(d$counts) &lt;- paste("tag",1:nrow(d$counts),sep=".")
+
+# estimate common dispersion and find differences in expression
+# here we demonstrate the 'exact' methods, but the use of topTags is
+# the same for a GLM analysis
+d &lt;- estimateCommonDisp(d)
+de &lt;- exactTest(d)
+
+# look at top 10
+topTags(de)
+# Can specify how many tags to view
+tp &lt;- topTags(de, n=15)
+# Here we view top 15
+tp
+# Or order by fold change instead
+topTags(de,sort.by="logFC")
+</pre>
+
+<hr><div align="center">[Package <em>edgeR</em> version 2.4.3 <a href="00Index.html">Index</a>]</div>
+</body></html>

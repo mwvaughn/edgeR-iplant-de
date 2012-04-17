@@ -1,0 +1,74 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><title>R: Moving Average Smoother of Matrix Columns</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body>
+
+<table width="100%" summary="page for movingAverageByCol {edgeR}"><tr><td>movingAverageByCol {edgeR}</td><td align="right">R Documentation</td></tr></table>
+
+<h2>Moving Average Smoother of Matrix Columns</h2>
+
+<h3>Description</h3>
+
+
+<p>Apply a moving average smoother to the columns of a matrix.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+movingAverageByCol(x, width=5, full.length=TRUE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>numeric matrix</p>
+</td></tr>
+<tr valign="top"><td><code>width</code></td>
+<td>
+<p>integer, width of window of rows to be averaged</p>
+</td></tr>
+<tr valign="top"><td><code>full.length</code></td>
+<td>
+<p>logical value, should output have same number of rows as input?</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+
+<p>If <code>full.length=TRUE</code>, narrower windows are used at the start and end of each column to make a column of the same length as input.
+If <code>FALSE</code>, all values are averager of <code>width</code> input values, so the number of rows is less than input.
+</p>
+
+
+<h3>Value</h3>
+
+
+<p>Numeric matrix containing smoothed values.
+If <code>full.length=TRUE</code>, of same dimension as <code>x</code>.
+If <code>full.length=FALSE</code>, has <code>width-1</code> fewer rows than <code>x</code>.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Gordon Smyth</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+x &lt;- matrix(rpois(20,lambda=5),10,2)
+movingAverageByCol(x,3)
+</pre>
+
+<hr><div align="center">[Package <em>edgeR</em> version 2.4.3 <a href="00Index.html">Index</a>]</div>
+</body></html>

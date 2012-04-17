@@ -1,0 +1,17 @@
+{"components":[
+    {"name":"run_edgeR_exact.R",
+     "location":"/usr/local3/bin/edgeR-1.00",
+     "type":"executable",
+     "description":"Differential expression using edgeR with Fisher's Exact Test",
+   "version":"1.00",
+     "attribution":"http://www.ncbi.nlm.nih.gov/pmc/articles/PMC2796818/",
+     "implementation":
+    {"implementor_email":"vaughn@iplantcollaborative.org",
+     "implementor":"vaughn",
+     "test":
+        {"params":[]}}}
+     ],
+ "templates":[],
+ "analyses":[]
+}
+

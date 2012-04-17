@@ -1,0 +1,79 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><title>R: Weighted Common Log-Likelihood</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body>
+
+<table width="100%" summary="page for weightedComLik {edgeR}"><tr><td>weightedComLik {edgeR}</td><td align="right">R Documentation</td></tr></table>
+
+<h2>Weighted Common Log-Likelihood</h2>
+
+<h3>Description</h3>
+
+<p>Allow a flexible approach to accounting for a potential dependence of the dispersion on the abundance (expression level) of tags/genes by calculating a weighted 'common' log-likelihood for each gene.</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+weightedComLik(object,l0,prop.used=0.25)
+weightedComLikMA(object,l0,prop.used=0.05)
+</pre>
+
+
+<h3>Arguments</h3>
+
+ 
+<table summary="R argblock">
+<tr valign="top"><td><code>object</code></td>
+<td>
+<p><code>DGEList</code> object with (at least) elements <code>counts</code> (table of unadjusted counts) and <code>samples</code> (data frame containing information about experimental group, library size and normalization factor for the library size)</p>
+</td></tr>
+<tr valign="top"><td><code>l0</code></td>
+<td>
+<p>matrix of the conditional log-likelihood evaluated at a variety of values for the dispersion (on the delta scale, <code>phi/(1 + phi)</code>) for each tag/gene. The matrix has number of rows equal to the number of tags/genes and number of columns equal to the number of grid values (between 0 and 1) for the dispersion at which the conditional log-likelihood is evaluated.</p>
+</td></tr>
+<tr valign="top"><td><code>prop.used</code></td>
+<td>
+<p>scalar giving the proportion of tags/genes in the whole dataset to use in computing the weighted common log-likelihood for each tag/gene. Default value is <code>0.25</code>, i.e. a quarter of the tags/genes in the dataset, for <code>weightedComLik</code> and <code>0.05</code> for <code>weightedComLikMA</code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+
+<p>Genes are ordered based on abundance (expression level) and for a given gene, a proportion of the genes close to it are used to compute the common log-likelihood with decreasing weight given to the genes further from the given gene. Weighting is done using the tricube weighting function for <code>weightedComLik</code>. Computation can be slow relative to other functions in <code>edgeR</code>, especially if the number of genes or the number of grid values (i.e. the dimensions of l0) are large. <code>weightedComLikMA</code> uses a moving average to do the weighting (using <code><a href="movingAverageByCol.html">movingAverageByCol</a></code>) and so is much faster than <code>weightedComLik</code>.
+</p>
+
+
+<h3>Value</h3>
+
+<p>matrix of weighted common log-likelihood values computed for each gene at each grid value for the dispersion. The matrix returned has the same dimensions as l0.</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Davis McCarthy</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+counts&lt;-matrix(rnbinom(20,size=1,mu=10),nrow=5)
+d&lt;-DGEList(counts=counts,group=rep(1:2,each=2),lib.size=rep(c(1000:1001),2))
+d&lt;-estimateCommonDisp(d)
+ntags&lt;-nrow(d$counts)
+y&lt;-splitIntoGroups(new("DGEList",list(counts=d$pseudo.alt,samples=d$samples)))
+grid.vals&lt;-seq(0.001,0.999,length.out=10)
+l0&lt;-0
+for(i in 1:length(y)) {
+  	 l0&lt;-condLogLikDerDelta(y[[i]],grid.vals,der=0,doSum=FALSE)+l0
+}
+m0 &lt;- ntags*weightedComLik(d,l0,prop.used=0.25) # Weights sum to 1, so need to multiply by number of tags to give this the same weight overall as the regular common likelihood
+# Or use the moving-average method
+m1 &lt;- ntags*weightedComLikMA(d,l0,prop.used=0.05)
+</pre>
+
+<hr><div align="center">[Package <em>edgeR</em> version 2.4.3 <a href="00Index.html">Index</a>]</div>
+</body></html>

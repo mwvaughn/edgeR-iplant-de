@@ -1,0 +1,65 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><title>R: Digital Gene Expression Generalized Linear Model results -...</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body>
+
+<table width="100%" summary="page for DGEGLM-class {edgeR}"><tr><td>DGEGLM-class {edgeR}</td><td align="right">R Documentation</td></tr></table>
+
+<h2>Digital Gene Expression Generalized Linear Model results - class</h2>
+
+<h3>Description</h3>
+
+
+<p>A simple list-based class for storing results of a GLM fit
+to each tag/gene in a DGE dataset.
+</p>
+
+
+<h3>Slots/List Components</h3>
+
+
+<p>Objects of this class contain the following list components:
+</p>
+<p><code>coefficients</code>: matrix containing the coefficients
+computed from fitting the model defined by the design matrix to each gene/tag in the dataset.
+</p>
+<p><code>df.residual</code>: vector containing the residual degrees of freedom for the model fit to each tag/gene in the dataset.
+</p>
+<p><code>deviance</code>: vector giving the deviance from the model fit to each tag/gene.
+</p>
+<p><code>design</code>: design matrix for the full model from the likelihood
+ratio test.
+</p>
+<p><code>offset</code>: scalar, vector or matrix of offset values to be included in the GLMs for each tag/gene.
+</p>
+<p><code>samples</code>: data frame containing information about the samples comprising the dataset.
+</p>
+<p><code>genes</code>: data frame containing information about the genes or tags for which we have DGE data (can be <code>NULL</code> if there is no information available).
+</p>
+<p><code>dispersion</code>: scalar or vector providing the value of the dispersion parameter used in the negative binomial GLM for each tag/gene.
+</p>
+<p><code>lib.size</code>: vector providing the effective library size for each sample in the dataset.
+</p>
+<p><code>weights</code>: matrix of weights used in the GLM fitting for each tag/gene.
+</p>
+<p><code>fitted.values</code>: the fitted (expected) values&ndash;here they are counts&ndash;from the GLM for each tag/gene.
+</p>
+<p><code>abundance</code>: vector of gene/tag abundances (expression level), on the log2 scale, computed from the mean count for each gene/tag after scaling count by normalized library size.
+</p>
+
+
+<h3>Methods</h3>
+
+
+<p>This class inherits directly from class <code>list</code> so any operation appropriate for lists will work on objects of this class.
+<code>DGEGLM</code> objects also have a <code>show</code> method.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Davis McCarthy</p>
+
+<hr><div align="center">[Package <em>edgeR</em> version 2.4.3 <a href="00Index.html">Index</a>]</div>
+</body></html>

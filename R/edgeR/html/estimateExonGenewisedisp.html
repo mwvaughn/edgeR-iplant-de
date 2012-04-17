@@ -1,0 +1,77 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><title>R: Estimate Genewise Dispersions from Exon-Level Count Data</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body>
+
+<table width="100%" summary="page for estimateExonGenewiseDisp {edgeR}"><tr><td>estimateExonGenewiseDisp {edgeR}</td><td align="right">R Documentation</td></tr></table>
+
+<h2>Estimate Genewise Dispersions from Exon-Level Count Data</h2>
+
+<h3>Description</h3>
+
+<p>Estimate a dispersion value for each gene from exon-level count data by collapsing exons into the genes to which they belong.</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+estimateExonGenewiseDisp(y, geneID, group=NULL)
+</pre>
+
+
+<h3>Arguments</h3>
+
+ 
+<table summary="R argblock">
+<tr valign="top"><td><code>y</code></td>
+<td>
+<p>either a matrix of exon-level counts or a <code>DGEList</code> object with (at least) elements <code>counts</code> (table of counts summarized at the exon level) and <code>samples</code> (data frame containing information about experimental group, library size and normalization factor for the library size). Each row of <code>y</code> should represent one exon.</p>
+</td></tr>
+<tr valign="top"><td><code>geneID</code></td>
+<td>
+<p>vector of length equal to the number of rows of <code>y</code>, which provides the gene identifier for each exon in <code>y</code>. These identifiers are used to group the relevant exons into genes for the gene-level analysis of splice variation.</p>
+</td></tr>
+<tr valign="top"><td><code>group</code></td>
+<td>
+<p>factor supplying the experimental group/condition to which each sample (column of <code>y</code>) belongs. If <code>NULL</code> (default) the function will try to extract if from <code>y</code>, which only works if <code>y</code> is a <code>DGEList</code> object.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+
+<p>This function can be used to compute genewise dispersion estimates (for an experiment with a one-way, or multiple group, layout) from exon-level count data. <code>estimateCommonDisp</code> and <code>estimateTagwiseDisp</code> are used to do the computation and estimation, and the default arguments for those functions are used.
+</p>
+
+
+<h3>Value</h3>
+
+<p><code>estimateExonGenewiseDisp</code> returns a vector of genewise dispersion estimates, one for each unique <code>geneID</code>.</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Davis McCarthy, Gordon Smyth</p>
+
+
+<h3>See Also</h3>
+
+
+<p><code><a href="estimateCommonDisp.html">estimateCommonDisp</a></code> and related functions for estimating the dispersion parameter for the negative binomial model.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+# generate exon counts from NB, create list object
+y&lt;-matrix(rnbinom(40,size=1,mu=10),nrow=10)
+d&lt;-DGEList(counts=y,group=rep(1:2,each=2))
+genes &lt;- rep(c("gene.1","gene.2"), each=5)
+estimateExonGenewiseDisp(d, genes)
+</pre>
+
+<hr><div align="center">[Package <em>edgeR</em> version 2.4.3 <a href="00Index.html">Index</a>]</div>
+</body></html>

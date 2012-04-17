@@ -1,0 +1,90 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><title>R: Identify Genes with Splice Variants</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body>
+
+<table width="100%" summary="page for spliceVariants {edgeR}"><tr><td>spliceVariants {edgeR}</td><td align="right">R Documentation</td></tr></table>
+
+<h2>Identify Genes with Splice Variants</h2>
+
+<h3>Description</h3>
+
+<p>Identify genes exhibiting evidence for splice variants (alternative exon usage/transcript isoforms) from exon-level count data using negative binomial generalized linear models.</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+spliceVariants(y, geneID, dispersion=NULL, group=NULL, estimate.genewise.disp=TRUE, trace=FALSE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+ 
+<table summary="R argblock">
+<tr valign="top"><td><code>y</code></td>
+<td>
+<p>either a matrix of exon-level counts or a <code>DGEList</code> object with (at least) elements <code>counts</code> (table of counts summarized at the exon level) and <code>samples</code> (data frame containing information about experimental group, library size and normalization factor for the library size). Each row of <code>y</code> should represent one exon.</p>
+</td></tr>
+<tr valign="top"><td><code>geneID</code></td>
+<td>
+<p>vector of length equal to the number of rows of <code>y</code>, which provides the gene identifier for each exon in <code>y</code>. These identifiers are used to group the relevant exons into genes for the gene-level analysis of splice variation.</p>
+</td></tr>
+<tr valign="top"><td><code>dispersion</code></td>
+<td>
+<p>scalar (in future a vector will also be allowed) supplying the negative binomial dispersion parameter to be used in the negative binomial generalized linear model.</p>
+</td></tr>
+<tr valign="top"><td><code>group</code></td>
+<td>
+<p>factor supplying the experimental group/condition to which each sample (column of <code>y</code>) belongs. If <code>NULL</code> (default) the function will try to extract if from <code>y</code>, which only works if <code>y</code> is a <code>DGEList</code> object.</p>
+</td></tr>
+<tr valign="top"><td><code>estimate.genewise.disp</code></td>
+<td>
+<p>logical, should genewise dispersions (as opposed to a common dispersion value) be computed if the <code>dispersion</code> argument is <code>NULL</code>?</p>
+</td></tr>
+<tr valign="top"><td><code>trace</code></td>
+<td>
+<p>logical, whether or not verbose comments should be printed as function is run. Default is <code>FALSE</code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+
+<p>This function can be used to identify genes showing evidence  of splice variation (i.e. alternative splicing, alternative exon usage, transcript isoforms). A negative binomial generalized linear model is used to assess evidence, for each gene, given the counts for the exons for each gene, by fitting a model with an interaction between exon and experimental group and comparing this model (using a likelihood ratio test) to a null model which does not contain the interaction. Genes that show significant evidence for an interaction between exon and experimental group by definition show evidence for splice variation, as this indicates that the observed differences between the exon counts between the different experimental groups cannot be explained by consistent differential expression of the gene across all exons. The function <code>topTags</code> can be used to display the results of <code>spliceVariants</code> with genes ranked by evidence for splice variation.
+</p>
+
+
+<h3>Value</h3>
+
+<p><code>spliceVariants</code> returns a <code>DGEExact</code> object, which contains a table of results for the test of differential splicing between experimental groups (alternative exon usage), a data frame containing the gene identifiers for which results were obtained and the dispersion estimate(s) used in the statistical models and testing.</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Davis McCarthy, Gordon Smyth</p>
+
+
+<h3>See Also</h3>
+
+
+<p><code><a href="estimateExonGenewisedisp.html">estimateExonGenewiseDisp</a></code> for more information about estimating genewise dispersion values from exon-level counts. <code><a href="DGEList.html">DGEList</a></code> for more information about the <code>DGEList</code> class. <code><a href="topTags.html">topTags</a></code> for more information on displaying ranked results from <code>spliceVariants</code>. <code><a href="estimateCommonDisp.html">estimateCommonDisp</a></code> and related functions for estimating the dispersion parameter for the negative binomial model.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+# generate exon counts from NB, create list object
+y&lt;-matrix(rnbinom(40,size=1,mu=10),nrow=10)
+d&lt;-DGEList(counts=y,group=rep(1:2,each=2))
+genes &lt;- rep(c("gene.1","gene.2"), each=5)
+disp &lt;- 0.2
+spliceVariants(d, genes, disp)
+</pre>
+
+<hr><div align="center">[Package <em>edgeR</em> version 2.4.3 <a href="00Index.html">Index</a>]</div>
+</body></html>

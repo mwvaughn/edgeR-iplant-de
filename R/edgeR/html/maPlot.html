@@ -1,0 +1,122 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><title>R: Plots Log-Fold Change versus Log-Concentration (or, M versus...</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body>
+
+<table width="100%" summary="page for maPlot {edgeR}"><tr><td>maPlot {edgeR}</td><td align="right">R Documentation</td></tr></table>
+
+<h2>
+Plots Log-Fold Change versus Log-Concentration (or, M versus A) for Count Data
+</h2>
+
+<h3>Description</h3>
+
+
+<p>To represent counts that were low (e.g. zero in 1 library and non-zero in the other) in one of the two conditions, a 'smear' of points at low A value is presented.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+maPlot(x, y, logAbundance=NULL, logFC=NULL, normalize=FALSE, smearWidth = 1, col = NULL, allCol = "black", lowCol = "orange", deCol="red", de.tags=NULL, smooth.scatter=FALSE, lowess=FALSE, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>vector of counts or concentrations (group 1)</p>
+</td></tr>
+<tr valign="top"><td><code>y</code></td>
+<td>
+<p>vector of counts or concentrations (group 2)</p>
+</td></tr>
+<tr valign="top"><td><code>logAbundance</code></td>
+<td>
+<p>vector providing the abundance of each tag on the log2 scale. Purely optional (default is <code>NULL</code>), but in combination with <code>logFC</code> provides a more direct way to create an MA-plot if the log-abundance and log-fold change are available.</p>
+</td></tr>
+<tr valign="top"><td><code>logFC</code></td>
+<td>
+<p>vector providing the log-fold change for each tag for a given experimental contrast. Default is <code>NULL</code>, only to be used together with <code>logAbundance</code> as both need to be non-null for their values to be used.</p>
+</td></tr>
+<tr valign="top"><td><code>normalize</code></td>
+<td>
+<p>logical, whether to divide <code>x</code> and <code>y</code> vectors by their sum</p>
+</td></tr>
+<tr valign="top"><td><code>smearWidth</code></td>
+<td>
+<p>scalar, width of the smear</p>
+</td></tr>
+<tr valign="top"><td><code>col</code></td>
+<td>
+<p>vector of colours for the points (if <code>NULL</code>, uses <code>allCol</code> and <code>lowCol</code>)</p>
+</td></tr>
+<tr valign="top"><td><code>allCol</code></td>
+<td>
+<p>colour of the non-smeared points</p>
+</td></tr>
+<tr valign="top"><td><code>lowCol</code></td>
+<td>
+<p>colour of the smeared points</p>
+</td></tr>
+<tr valign="top"><td><code>deCol</code></td>
+<td>
+<p>colour of the DE (differentially expressed) points</p>
+</td></tr>
+<tr valign="top"><td><code>de.tags</code></td>
+<td>
+<p>indices for tags identified as being differentially expressed; use <code>exactTest</code> to identify DE genes</p>
+</td></tr>
+<tr valign="top"><td><code>smooth.scatter</code></td>
+<td>
+<p>logical, whether to produce a 'smooth scatter' plot using the KernSmooth::smoothScatter function or just a regular scatter plot; default is <code>FALSE</code>, i.e. produce a regular scatter plot</p>
+</td></tr>
+<tr valign="top"><td><code>lowess</code></td>
+<td>
+<p>logical, indicating whether or not to add a lowess curve to the MA-plot to give an indication of any trend in the log-fold change with log-concentration</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>further arguments passed on to <code>plot</code></p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+
+<p>The points to be smeared are identified as being equal to the minimum in one of the two groups.  The smear is created by using random uniform numbers of width <code>smearWidth</code> to the left of the minimum A value.
+</p>
+
+
+<h3>Value</h3>
+
+<p>a plot to the current device, and invisibly returns the <code>M</code> (logFC) and  <code>A</code> (logConc)  values used for the plot, plus identifiers <code>w</code> and <code>v</code> of genes for which <code>M</code> and A values, or just <code>M</code> values, respectively, were adjusted to make a nicer looking plot. </p>
+
+
+<h3>Author(s)</h3>
+
+<p>Mark Robinson, Davis McCarthy</p>
+
+
+<h3>See Also</h3>
+
+
+<p><code><a href="plotSmear.html">plotSmear</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+y &lt;- matrix(rnbinom(10000,mu=5,size=2),ncol=4)
+maPlot(y[,1], y[,2])
+</pre>
+
+<hr><div align="center">[Package <em>edgeR</em> version 2.4.3 <a href="00Index.html">Index</a>]</div>
+</body></html>

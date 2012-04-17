@@ -1,0 +1,140 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><title>R: Estimate Dispersions with an Abundance-Dependent Trend for...</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body>
+
+<table width="100%" summary="page for dispBinTrend {edgeR}"><tr><td>dispBinTrend {edgeR}</td><td align="right">R Documentation</td></tr></table>
+
+<h2>Estimate Dispersions with an Abundance-Dependent Trend for Negative Binomial GLMs</h2>
+
+<h3>Description</h3>
+
+
+<p>Estimate a dispersion parameter for each of many negative binomial generalized linear models by computing the common dispersion for genes sorted into bins based on overall abundance and then using splines or a loess fit to interpolate a dispersion value for each gene, dependent on overall abundance of the gene.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+dispBinTrend(y, design, offset=NULL, df = 5, span=2/3, min.n=500, method.bin="CoxReid", method.trend="spline", trace=0, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+ 
+<table summary="R argblock">
+<tr valign="top"><td><code>y</code></td>
+<td>
+<p>numeric matrix of counts</p>
+</td></tr>
+<tr valign="top"><td><code>design</code></td>
+<td>
+<p>numeric matrix giving the design matrix for the GLM that is to be fit.</p>
+</td></tr>
+<tr valign="top"><td><code>offset</code></td>
+<td>
+<p>numeric scalar, vector or matrix giving the offset (in addition to the log of the effective library size) that is to be included in the NB GLM for the transcripts. If a scalar, then this value will be used as an offset for all transcripts and libraries. If a vector, it should be have length equal to the number of libraries, and the same vector of offsets will be used for each transcript. If a matrix, then each library for each transcript can have a unique offset, if desired. In <code>adjustedProfileLik</code> the <code>offset</code> must be a matrix with the same dimension as the table of counts.</p>
+</td></tr>
+<tr valign="top"><td><code>df</code></td>
+<td>
+<p>scalar, the degrees of freedom for the natural cubic splines fit, used to determine the placement of the knots (number of knots is <code>df - 1</code>. Default is <code>5</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>span</code></td>
+<td>
+<p>scalar, passed to <code>loess</code> to determine the amount of smoothing for the loess fit. Default is <code>2/3</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>min.n</code></td>
+<td>
+<p>scalar, minimim number of genes in each of the bins into which genes are sorted to form the basis for interpolating the dispersions. Setting a minimum value ensures that there will be sufficient genes in each bin to allow reliable estimation of the common dispersion for each bin.</p>
+</td></tr>
+<tr valign="top"><td><code>method.bin</code></td>
+<td>
+<p>character, passed to <code>binGLMDispersion</code>, to specify the method used to compute the common dispersion within each bin of genes. Default is <code>"CoxReid"</code>, other options are <code>"Pearson"</code> and <code>"deviance"</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>method.trend</code></td>
+<td>
+<p>character, specifies method to produce a smooth fit through the binned common dispersions in order to interpolate the trended dispersions. Default is <code>"spline"</code> to use natural cubic splines, other option is <code>"loess"</code> to use a loess fit.</p>
+</td></tr>
+<tr valign="top"><td><code>trace</code></td>
+<td>
+<p>logical, should iteration information be output?</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>option arguments to be passed to lower-level function <code>binGLMDispersion</code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+
+<p>This function takes the binned common dispersion and abundance from <code><a href="bin.dispersion.html">binGLMDispersion</a></code> and fits a smooth curve through these binned values using either natural cubic splines or loess. From this smooth curve it predicts the dispersion value for each gene based on the gene's overall abundance. This results in estimates for the NB dispersion parameter which have a dependence on the overall expression level of the gene, and thus have an abundance-dependent trend. This function is called by <code><a href="estimateGLMTrendedDisp.html">estimateGLMTrendedDisp</a></code>.
+</p>
+
+
+<h3>Value</h3>
+
+
+<p>list with the following components:
+</p>
+<table summary="R valueblock">
+<tr valign="top"><td><code>abundance</code></td>
+<td>
+<p>numeric vector containing the overall abundance for each gene</p>
+</td></tr>
+<tr valign="top"><td><code>dispersion</code></td>
+<td>
+<p>numeric vector giving the trended dispersion estimate for each gene</p>
+</td></tr>
+<tr valign="top"><td><code>bin.abundance</code></td>
+<td>
+<p>numeric vector of length equal to <code>nbins</code> giving the average (mean) abundance for each bin</p>
+</td></tr>
+<tr valign="top"><td><code>bin.dispersion</code></td>
+<td>
+<p>numeric vector of length equal to <code>nbins</code> giving the estimated common dispersion for each bin</p>
+</td></tr>
+</table>
+
+
+<h3>Author(s)</h3>
+
+<p>Davis McCarthy and Gordon Smyth</p>
+
+
+<h3>References</h3>
+
+
+<p>Cox, DR, and Reid, N (1987). Parameter orthogonality and approximate conditional inference. <EM>Journal of the Royal Statistical Society Series B</EM> 49, 1-39.
+</p>
+
+
+<h3>See Also</h3>
+
+
+<p><code><a href="bin.dispersion.html">binGLMDispersion</a></code>, <code><a href="estimateGLMTrendedDisp.html">estimateGLMTrendedDisp</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+ntags &lt;- 1000
+nlibs &lt;- 4
+means &lt;- seq(5,10000,length.out=ntags)
+y &lt;- matrix(rnbinom(ntags*nlibs,mu=rep(means,nlibs),size=0.1*means),nrow=ntags,ncol=nlibs)
+keep &lt;- rowSums(y) &gt; 0
+y &lt;- y[keep,]
+group &lt;- factor(c(1,1,2,2))
+lib.size &lt;- colSums(y)
+design &lt;- model.matrix(~group) # Define the design matrix for the full model
+disp &lt;- dispBinTrend(y, design, offset=log(lib.size), min.n=100, span=0.3)
+plot(disp$abundance, disp$dispersion)
+</pre>
+
+<hr><div align="center">[Package <em>edgeR</em> version 2.4.3 <a href="00Index.html">Index</a>]</div>
+</body></html>

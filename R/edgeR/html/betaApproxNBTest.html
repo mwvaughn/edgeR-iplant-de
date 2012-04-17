@@ -1,0 +1,85 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><title>R: An Approximate Exact Test for Differences between Two...</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body>
+
+<table width="100%" summary="page for betaApproxNBTest {edgeR}"><tr><td>betaApproxNBTest {edgeR}</td><td align="right">R Documentation</td></tr></table>
+
+<h2>An Approximate Exact Test for Differences between Two Negative Binomial Groups</h2>
+
+<h3>Description</h3>
+
+<p>Approximate the tail probabilities of a conditional negative binomial exact test of equality of means between groups. </p>
+
+
+<h3>Usage</h3>
+
+<pre>
+betaApproxNBTest(x1, x2, dispersion)
+</pre>
+
+
+<h3>Arguments</h3>
+
+ 
+<table summary="R argblock">
+<tr valign="top"><td><code>x1</code></td>
+<td>
+<p>vector of observed negative binomial variables for group one</p>
+</td></tr>
+<tr valign="top"><td><code>x2</code></td>
+<td>
+<p>vector of observed negative binomial variables for group two</p>
+</td></tr>
+<tr valign="top"><td><code>dispersion</code></td>
+<td>
+<p>vector or scalar providing the value of the NB dispersion parameter for each tag to be used for calculating p-values for differences in mean between the two groups.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+
+<p><code>exactTest</code> is the user-level function for computing p-values for differential expression between groups in DGE data. However, for tags with extremely large counts, the computation of the tail propbabilities of the conditional negative binomial exact test can be unstable. For such tags, the tail probabilities are well approximated by using a transformed beta distribution (Anderson and Boullion, 1972).
+</p>
+
+
+<h3>Value</h3>
+
+
+<p>Vector of p-values providing the extent of evidence for difference in means between the two groups.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Davis McCarthy</p>
+
+
+<h3>References</h3>
+
+
+<p>Anderson, Dwane E. and Boullion, Thomas L. Homogeneity test for two negative binomial populations. IEEE Transactions on Reliability, Vol. R-21, No. 2, May 1972.
+</p>
+
+
+<h3>See Also</h3>
+
+
+<p>Computing p-values for differential expression for each transcript between two (only) digital gene expression libraries can also be done using the <code>sage.test</code> function in the <code>statmod</code> package.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+# generate raw counts from NB, create list object
+x1&lt;-rnbinom(20,size=1,mu=1000)
+x2&lt;-rnbinom(20, size=1, mu=1500)
+betaApproxNBTest(x1, x2, dispersion=1)
+</pre>
+
+<hr><div align="center">[Package <em>edgeR</em> version 2.4.3 <a href="00Index.html">Index</a>]</div>
+</body></html>

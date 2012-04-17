@@ -1,0 +1,117 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><title>R: Estimate Dispersion Trend for Negative Binomial GLMs</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body>
+
+<table width="100%" summary="page for dispCoxReidSplineTrend {edgeR}"><tr><td>dispCoxReidSplineTrend {edgeR}</td><td align="right">R Documentation</td></tr></table>
+
+<h2>Estimate Dispersion Trend for Negative Binomial GLMs</h2>
+
+<h3>Description</h3>
+
+
+<p>Estimate trended common dispersion parameters across multiple negative binomial generalized linear models using Cox-Reid adjusted profile likelihood.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+dispCoxReidSplineTrend(y, design, offset=NULL, df = 5, subset=10000, method.optim="Nelder-Mead", trace=0)
+dispCoxReidPowerTrend(y, design, offset=NULL, subset=10000, method.optim="Nelder-Mead", trace=0)
+</pre>
+
+
+<h3>Arguments</h3>
+
+ 
+<table summary="R argblock">
+<tr valign="top"><td><code>y</code></td>
+<td>
+<p>numeric matrix of counts</p>
+</td></tr>
+<tr valign="top"><td><code>design</code></td>
+<td>
+<p>numeric matrix giving the design matrix for the GLM that is to be fit.</p>
+</td></tr>
+<tr valign="top"><td><code>offset</code></td>
+<td>
+<p>numeric scalar, vector or matrix giving the offset (in addition to the log of the effective library size) that is to be included in the NB GLM for the transcripts. If a scalar, then this value will be used as an offset for all transcripts and libraries. If a vector, it should be have length equal to the number of libraries, and the same vector of offsets will be used for each transcript. If a matrix, then each library for each transcript can have a unique offset, if desired. In <code>adjustedProfileLik</code> the <code>offset</code> must be a matrix with the same dimension as the table of counts.</p>
+</td></tr>
+<tr valign="top"><td><code>df</code></td>
+<td>
+<p>integer giving the degrees of freedom of the spline function. The number of knots used for the spline function is <code>df - 1</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>subset</code></td>
+<td>
+<p>integer, number of rows to use in the calculation.  Rows used are chosen evenly spaced by abundance.</p>
+</td></tr>
+<tr valign="top"><td><code>method.optim</code></td>
+<td>
+<p>the method to be used in <code>optim</code>. See <code><a href="../../stats/html/optim.html">optim</a></code> for more detail.</p>
+</td></tr>
+<tr valign="top"><td><code>trace</code></td>
+<td>
+<p>logical, should iteration information be output?</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+
+<p>In the <code>edgeR</code> context, these are low-level functions called by <code>estimateGLMTrendedDisp</code>.
+</p>
+<p><code>dispCoxReidSplineTrend</code> maximizes the Cox-Reid adjusted profile likelihood (Cox and Reid, 1987) by fitting spline interpolation.
+<code>dispCoxReidPowerTrend</code> models the dispersion trend by a power function. The parameters of the power function are estimated by maximizing the Cox-Reid adjusted profile likelihood.
+</p>
+
+
+<h3>Value</h3>
+
+
+<p>Numeric vector giving the estimated trended common dispersions. It is of the same length as the number of tags in the count data.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Yunshun Chen, Davis McCarthy, Gordon Smyth</p>
+
+
+<h3>References</h3>
+
+
+<p>Cox, DR, and Reid, N (1987). Parameter orthogonality and approximate conditional inference. <EM>Journal of the Royal Statistical Society Series B</EM> 49, 1-39.
+</p>
+
+
+<h3>See Also</h3>
+
+
+<p><code><a href="estimateGLMTrendedDisp.html">estimateGLMTrendedDisp</a></code>, <code><a href="../../stats/html/optim.html">optim</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+design &lt;- matrix(1,4,1)
+y &lt;- matrix((rnbinom(400,mu=100,size=2)),100,4)
+dispCoxReidSplineTrend(y, design, df
+
+
+
+
+
+
+
+
+
+=3)
+dispCoxReidPowerTrend(y, design)
+</pre>
+
+<hr><div align="center">[Package <em>edgeR</em> version 2.4.3 <a href="00Index.html">Index</a>]</div>
+</body></html>

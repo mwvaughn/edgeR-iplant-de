@@ -1,0 +1,95 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><title>R: Subset DGEList, DGEGLM, DGEExact and DGELRT Objects</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body>
+
+<table width="100%" summary="page for subsetting {edgeR}"><tr><td>subsetting {edgeR}</td><td align="right">R Documentation</td></tr></table>
+
+<h2>Subset DGEList, DGEGLM, DGEExact and DGELRT Objects</h2>
+
+<h3>Description</h3>
+
+
+<p>Extract a subset of a <code>DGEList</code>, <code>DGEGLM</code>, <code>DGEExact</code> or <code>DGELRT</code> object.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+## S3 method for class 'DGEList'
+object[i, j, ...]
+## S3 method for class 'DGEGLM'
+object[i, j, ...]
+## S3 method for class 'DGEExact'
+object[i, j, ...]
+## S3 method for class 'DGELRT'
+object[i, j, ...]
+</pre>
+
+
+<h3>Arguments</h3>
+
+
+<table summary="R argblock">
+<tr valign="top"><td><code>object</code></td>
+<td>
+<p>object of class <code>DGEList</code>, <code>DGEGLM</code>, <code>DGEExact</code> or <code>DGELRT</code>, respectively</p>
+</td></tr>
+<tr valign="top"><td><code>i,j</code></td>
+<td>
+<p>elements to extract. <code>i</code> subsets the tags or genes while <code>j</code> subsets the libraries. Note, columns of <code>DGEGLM</code>, <code>DGEExact</code> and <code>DGELRT</code> objects cannot be subsetted.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>not used</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+
+<p><code>i,j</code> may take any values acceptable for the matrix components of <code>object</code> of class <code>DGEList</code>.
+See the <a href="../../base/html/Extract.html">Extract</a> help entry for more details on subsetting matrices. For <code>DGEGLM</code>, <code>DGEExact</code> and <code>DGELRT</code> objects, only rows (i.e. <code>i</code>) may be subsetted.
+</p>
+
+
+<h3>Value</h3>
+
+
+<p>An object of class <code>DGEList</code>, <code>DGEGLM</code>, <code>DGEExact</code> or <code>DGELRT</code> as appropriate, holding data from the specified subset of tags/genes and libraries.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Davis McCarthy, Gordon Smyth</p>
+
+
+<h3>See Also</h3>
+
+
+<p><code><a href="../../base/html/Extract.html">Extract</a></code> in the base package.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+d &lt;- matrix(rnbinom(16,size=1,mu=10),4,4)
+rownames(d) &lt;- c("a","b","c","d")
+colnames(d) &lt;- c("A1","A2","B1","B2")
+d &lt;- DGEList(counts=d,group=factor(c("A","A","B","B")))
+d[1:2,]
+d[1:2,2]
+d[,2]
+d &lt;- estimateCommonDisp(d)
+results &lt;- exactTest(d)
+results[1:2,]
+# NB: cannot subset columns for DGEExact objects
+</pre>
+
+<hr><div align="center">[Package <em>edgeR</em> version 2.4.3 <a href="00Index.html">Index</a>]</div>
+</body></html>
