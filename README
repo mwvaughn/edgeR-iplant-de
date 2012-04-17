@@ -1,0 +1,5 @@
+April 17, 2012
+
+run_edgeR_exact.R, when set to be +executable, can be run as though it were a binary or executable script. 
+Note that it refers to a locally-installed set of R modules - this is my solution for supporting R dependencies.
+Deploy those modules *ONCE* by running run_edgeR_exact.install.R as superuser
